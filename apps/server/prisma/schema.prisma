@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Agent {
+  id              String   @id @default(cuid())
+  name            String
+  status          String   @default("running")
+  needsAttention  Boolean  @default(false)
+  attentionReason String?
+  createdAt       DateTime @default(now())
+  endedAt         DateTime?
+  lastUpdateAt    DateTime @default(now())
+  events          Event[]
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  agentId   String
+  type      String   // "info" | "error"
+  message   String
+  tokens    Int?
+  cost      Float?
+  timestamp DateTime @default(now())
+  agent     Agent    @relation(fields: [agentId], references: [id])
+}
