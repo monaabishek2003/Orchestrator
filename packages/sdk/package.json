@@ -1,5 +1,5 @@
 {
-  "name": "@orchestrator/sdk",
+  "name": "orchestrator-sdk",
   "version": "0.1.0",
   "description": "Monitor your AI Agents",
   "main": "dist/index.js",

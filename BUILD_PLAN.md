@@ -25,11 +25,11 @@
 - [x] `pnpm build` → verify dist/ has index.js, index.mjs, index.d.ts
 
 ### Test Scripts (`examples/`)
-- [ ] Init examples dir, link local SDK, add tsx
-- [ ] `agent-ok.ts`: starts, 5 steps with 3s delay, ends cleanly
-- [ ] `agent-error.ts`: starts, 2 steps, calls `.error('Rate limit hit')`
-- [ ] `agent-stuck.ts`: starts, 1 step, sleeps 120s (attention engine flags at 45s)
-- [ ] Run all three against server, verify correct status in DB
+- [x] Init examples dir, link local SDK, add tsx
+- [x] `agent-ok.ts`: starts, 5 steps with 3s delay, ends cleanly
+- [x] `agent-error.ts`: starts, 2 steps, calls `.error('Rate limit hit')`
+- [x] `agent-stuck.ts`: starts, 1 step, sleeps 120s (attention engine flags at 45s)
+- [x] Run all three against server, verify correct status in DB
 
 ### Publish SDK
 - [ ] `npm publish --access public` from `packages/sdk/`
