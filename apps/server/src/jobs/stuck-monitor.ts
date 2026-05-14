@@ -1,5 +1,6 @@
 import prisma from '../lib/prisma';
 import { STUCK_CHECK_INTERVAL_MS, STUCK_INTERVAL_THRESHHOLD } from '../config';
+import { getIo } from '../socket';
 
 export function startStuckMonitor() {
   return setInterval(async () => {
@@ -36,8 +37,8 @@ export function startStuckMonitor() {
           where: { id: agent.id },
           data: { needsAttention: true, attentionReason: reason },
         });
-
-        console.log(`[ATTENTION} flagged agent ${agent.name}: ${reason}`);
+        getIo().emit('agents:update');
+        console.log(`[ATTENTION] flagged agent ${agent.name}: ${reason}`);
       }
     }
   }, STUCK_CHECK_INTERVAL_MS);

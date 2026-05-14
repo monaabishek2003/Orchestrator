@@ -32,9 +32,9 @@
 - [x] Run all three against server, verify correct status in DB
 
 ### Publish SDK
-- [ ] `npm publish --access public` from `packages/sdk/`
-- [ ] Fallback to scoped name if taken
-- [ ] Verify with `npm info orchestrator-sdk`
+- [x] `npm publish --access public` from `packages/sdk/`
+- [x] Fallback to scoped name if taken
+- [x] Verify with `npm info orchestrator-sdk`
 
 ---
 
@@ -47,16 +47,16 @@
 - [x] Attention engine timer (45s stuck detection)
 
 ### Step 1 — Socket.io Wiring
-- [ ] `pnpm --filter @orchestrator/server add socket.io`
-- [ ] Wrap Express in `http.createServer()`
-- [ ] Attach Socket.io with `cors: { origin: '*' }` for dev
-- [ ] Export `io` instance for routes to import
-- [ ] Add `io.emit('agents:update')` after each prisma write in POST routes
-- [ ] Also emit from attention engine when agent gets flagged
-- [ ] Test: curl endpoints, confirm server responds normally
+- [x] `pnpm --filter @orchestrator/server add socket.io`
+- [x] Wrap Express in `http.createServer()`
+- [x] Attach Socket.io with `cors: { origin: '*' }` for dev
+- [x] Export `io` instance for routes to import
+- [x] Add `io.emit('agents:update')` after each prisma write in POST routes
+- [x] Also emit from attention engine when agent gets flagged
+- [x] Test: curl endpoints, confirm server responds normally
 
 ### Step 2 — Resolve Endpoint
-- [ ] `POST /agent/:id/resolve` → sets `needsAttention=false`, `attentionReason=null` → emits `agents:update`
+- [x] `POST /agent/:id/resolve` → sets `needsAttention=false`, `attentionReason=null` → emits `agents:update`
 
 ### Step 3 — Static File Serving (after FE is built)
 - [ ] `express.static('public')` middleware

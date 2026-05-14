@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import prisma from '../lib/prisma';
+import { getIo } from '../socket';
 
 const router = Router();
 
@@ -8,7 +9,7 @@ router.post('/agent/start', async (req, res) => {
   const { name } = req.body;
 
   const agent = await prisma.agent.create({ data: { name } });
-
+  getIo().emit('agents:update');
   res.json(agent);
 });
 
@@ -23,7 +24,7 @@ router.post('/agent/step', async (req, res) => {
     where: { id: agentId },
     data: { lastUpdateAt: new Date() },
   });
-
+  getIo().emit('agents:update');
   res.json(event);
 });
 
@@ -38,7 +39,7 @@ router.post('/agent/error', async (req, res) => {
     where: { id: agentId },
     data: { needsAttention: true, attentionReason: message },
   });
-
+  getIo().emit('agents:update');
   res.json(event);
 });
 
@@ -50,11 +51,21 @@ router.post('/agent/end', async (req, res) => {
     where: { id: agentId },
     data: { status: 'done', endedAt: new Date() },
   });
-
+  getIo().emit('agents:update');
   res.json(agent);
 });
 
-// 5. Get all agents
+// 5. Resolve attention flag
+router.post('/agent/:id/resolve', async (req, res) => {
+  const agent = await prisma.agent.update({
+    where: { id: req.params.id },
+    data: { needsAttention: false, attentionReason: null },
+  });
+  getIo().emit('agents:update');
+  res.json(agent);
+});
+
+// 6. Get all agents
 router.get('/agents', async (_req, res) => {
   const agents = await prisma.agent.findMany({ orderBy: { createdAt: 'desc' } });
 
