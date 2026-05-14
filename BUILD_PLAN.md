@@ -91,11 +91,11 @@
 - [x] Confirm `:3000` loads
 
 ### Step 2 — useAgents Hook
-- [ ] `app/hooks/use-agents.ts`
-- [ ] On mount: fetch `/agents`, set state
-- [ ] Connect Socket.io, refetch on `'agents:update'`
-- [ ] Cleanup on unmount
-- [ ] Return `{ agents, loading, refetch }`
+- [x] `app/hooks/use-agents.ts`
+- [x] On mount: fetch `/agents`, set state
+- [x] Connect Socket.io, refetch on `'agents:update'`
+- [x] Cleanup on unmount
+- [x] Return `{ agents, loading, refetch }`
 
 ### Step 3 — StatCards
 - [ ] 4 cards: total, running, needsAttention, done
