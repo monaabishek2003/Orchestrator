@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useAgents } from "./hooks/use-agents";
-import { StatCards } from "./components/stat-cards";
-import { AttentionPanel } from "./components/attention-panel";
-import { AgentGrid } from "./components/agent-grid";
+import { StatCards } from "./features/stat-cards";
+import { AttentionPanel } from "./features/attention-panel";
+import { AgentGrid } from "./features/agent-grid";
 
 export default function Home() {
   const { agents, loading, refetch } = useAgents();
