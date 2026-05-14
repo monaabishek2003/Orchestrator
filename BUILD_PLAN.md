@@ -129,9 +129,9 @@
 - [x] Page title + emoji favicon
 
 ### Step 9 — Static Export
-- [ ] `pnpm --filter @orchestrator/web build` → `apps/web/out/`
-- [ ] Verify out/ has index.html + JS chunks
-- [ ] Script to copy out/ → server/public/
+- [x] `pnpm --filter @orchestrator/web build` → `apps/web/out/`
+- [x] Verify out/ has index.html + JS chunks
+- [x] Script to copy out/ → server/public/
 
 ---
 
