@@ -65,9 +65,12 @@ router.post('/agent/:id/resolve', async (req, res) => {
   res.json(agent);
 });
 
-// 6. Get all agents
+// 6. Get all agents (includes last event for grid display)
 router.get('/agents', async (_req, res) => {
-  const agents = await prisma.agent.findMany({ orderBy: { createdAt: 'desc' } });
+  const agents = await prisma.agent.findMany({
+    orderBy: { lastUpdateAt: 'desc' },
+    include: { events: { orderBy: { timestamp: 'desc' }, take: 1 } },
+  });
 
   res.json(agents);
 });

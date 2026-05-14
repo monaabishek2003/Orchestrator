@@ -107,10 +107,10 @@
 - [x] Resolve button POSTs to `/agent/:id/resolve`
 
 ### Step 5 — AgentGrid
-- [ ] shadcn Table: Name, Status (Badge), Last message, Last update (relative)
-- [ ] Sort by lastUpdateAt desc
-- [ ] Badge colors: running=blue, error=red, done=gray
-- [ ] Rows clickable → set selectedAgentId
+- [x] shadcn Table: Name, Status (Badge), Last message, Last update (relative)
+- [x] Sort by lastUpdateAt desc
+- [x] Badge colors: running=blue, error=red, done=gray
+- [x] Rows clickable → set selectedAgentId
 
 ### Step 6 — AgentDrawer
 - [ ] shadcn Sheet, slides from right

@@ -12,6 +12,7 @@ export type Agent = {
   createdAt: string;
   endedAt: string | null;
   lastUpdateAt: string;
+  events: { message: string; type: string }[];
 };
 
 export type Event = {
