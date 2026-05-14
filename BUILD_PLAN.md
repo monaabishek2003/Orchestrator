@@ -113,20 +113,20 @@
 - [x] Rows clickable → set selectedAgentId
 
 ### Step 6 — AgentDrawer
-- [ ] shadcn Sheet, slides from right
-- [ ] Fetches `/agent/:id` on open
-- [ ] Events in reverse-chronological order
-- [ ] Color-coded: info=neutral, error=red
-- [ ] Shows tokens/cost when present
+- [x] shadcn Sheet, slides from right
+- [x] Fetches `/agent/:id` on open
+- [x] Events in reverse-chronological order
+- [x] Color-coded: info=neutral, error=red
+- [x] Shows tokens/cost when present
 
 ### Step 7 — Wire Up page.tsx
-- [ ] Client component with useAgents
-- [ ] Header → StatCards → AttentionPanel → AgentGrid → AgentDrawer
+- [x] Client component with useAgents
+- [x] Header → StatCards → AttentionPanel → AgentGrid → AgentDrawer
 
 ### Step 8 — Polish
-- [ ] Empty state with install command + code snippet
-- [ ] Skeleton loaders
-- [ ] Page title + emoji favicon
+- [x] Empty state with install command + code snippet
+- [x] Skeleton loaders
+- [x] Page title + emoji favicon
 
 ### Step 9 — Static Export
 - [ ] `pnpm --filter @orchestrator/web build` → `apps/web/out/`
