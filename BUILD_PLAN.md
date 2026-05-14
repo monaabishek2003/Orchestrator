@@ -98,8 +98,8 @@
 - [x] Return `{ agents, loading, refetch }`
 
 ### Step 3 — StatCards
-- [ ] 4 cards: total, running, needsAttention, done
-- [ ] Responsive grid, big bold numbers
+- [x] 4 cards: total, running, needsAttention, done
+- [x] Responsive grid, big bold numbers
 
 ### Step 4 — AttentionPanel
 - [ ] Filter to `needsAttention === true`, return null if empty
