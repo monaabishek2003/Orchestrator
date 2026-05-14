@@ -102,9 +102,9 @@
 - [x] Responsive grid, big bold numbers
 
 ### Step 4 — AttentionPanel
-- [ ] Filter to `needsAttention === true`, return null if empty
-- [ ] Red-tinted border, one row per agent: name, reason, resolve button
-- [ ] Resolve button POSTs to `/agent/:id/resolve`
+- [x] Filter to `needsAttention === true`, return null if empty
+- [x] Red-tinted border, one row per agent: name, reason, resolve button
+- [x] Resolve button POSTs to `/agent/:id/resolve`
 
 ### Step 5 — AgentGrid
 - [ ] shadcn Table: Name, Status (Badge), Last message, Last update (relative)
