@@ -1,12 +1,42 @@
-#!/usr/bin/env node
 import http from 'http';
 import path from 'path';
 import fs from 'fs';
+import Database from 'better-sqlite3';
 import express from 'express';
 import cors from 'cors';
 import agentsRouter from './routes/agents';
 import { startStuckMonitor } from './jobs/stuck-monitor';
 import { initSocket } from './socket';
+
+// Apply schema directly via better-sqlite3 — no Prisma CLI needed at runtime.
+// DATABASE_URL is set as a side effect of importing agentsRouter → prisma.ts.
+{
+  const dbPath = process.env.DATABASE_URL!.replace(/^file:/, '');
+  const db = new Database(dbPath);
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS "Agent" (
+      "id" TEXT NOT NULL PRIMARY KEY,
+      "name" TEXT NOT NULL,
+      "status" TEXT NOT NULL DEFAULT 'running',
+      "needsAttention" BOOLEAN NOT NULL DEFAULT false,
+      "attentionReason" TEXT,
+      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "endedAt" DATETIME,
+      "lastUpdateAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+    CREATE TABLE IF NOT EXISTS "Event" (
+      "id" TEXT NOT NULL PRIMARY KEY,
+      "agentId" TEXT NOT NULL,
+      "type" TEXT NOT NULL,
+      "message" TEXT NOT NULL,
+      "tokens" INTEGER,
+      "cost" REAL,
+      "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "Event_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    );
+  `);
+  db.close();
+}
 
 const app = express();
 const httpServer = http.createServer(app);

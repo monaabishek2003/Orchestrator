@@ -59,22 +59,22 @@
 - [x] `POST /agent/:id/resolve` → sets `needsAttention=false`, `attentionReason=null` → emits `agents:update`
 
 ### Step 3 — Static File Serving (after FE is built)
-- [ ] `express.static('public')` middleware
-- [ ] Wildcard `app.get('*')` returning `public/index.html`
-- [ ] Both only active if `public/` directory exists
+- [x] `express.static('public')` middleware
+- [x] Wildcard `app.get('*')` returning `public/index.html`
+- [x] Both only active if `public/` directory exists
 
 ### Step 4 — npx Support (after FE is bundled)
-- [ ] package.json: `"bin": { "orchestrator-server": "./dist/index.js" }`
-- [ ] Add shebang `#!/usr/bin/env node` to entry file
-- [ ] DB path: `~/.orchestrator/dev.db`, ensure dir exists on startup
-- [ ] Run `prisma migrate deploy` on startup if needed
-- [ ] tsup build: `src/` → `dist/`
-- [ ] `"files": ["dist", "prisma", "public"]`
+- [x] package.json: `"bin": { "orchestrator-server": "./dist/index.js" }`
+- [x] Add shebang `#!/usr/bin/env node` to entry file
+- [x] DB path: `~/.orchestrator/dev.db`, ensure dir exists on startup
+- [x] Run `prisma migrate deploy` on startup if needed
+- [x] tsup build: `src/` → `dist/`
+- [x] `"files": ["dist", "prisma", "public"]`
 
 ### Step 5 — Publish Server
-- [ ] Copy `apps/web/out/` → `apps/server/public/`
-- [ ] Build server
-- [ ] Test with `npm pack` from fresh folder
+- [x] Copy `apps/web/out/` → `apps/server/public/`
+- [x] Build server
+- [x] Test with `npm pack` from fresh folder
 - [ ] `npm publish --access public`
 - [ ] Verify `npx orchestrator-server` from fresh folder
 
