@@ -83,12 +83,12 @@
 ## PART 3 — FRONTEND (`apps/web`)
 
 ### Step 1 — Scaffold
-- [ ] `pnpm create next-app@latest .` (TS, Tailwind, App Router)
-- [ ] `pnpm dlx shadcn@latest init` (default style, slate)
-- [ ] Add components: button, card, badge, table, sheet, separator, skeleton
-- [ ] `pnpm add socket.io-client date-fns`
-- [ ] next.config.js: `output: 'export'`, `images: { unoptimized: true }`
-- [ ] Confirm `:3000` loads
+- [x] `pnpm create next-app@latest .` (TS, Tailwind, App Router)
+- [x] `pnpm dlx shadcn@latest init` (default style, slate)
+- [x] Add components: button, card, badge, table, sheet, separator, skeleton
+- [x] `pnpm add socket.io-client date-fns`
+- [x] next.config.js: `output: 'export'`, `images: { unoptimized: true }`
+- [x] Confirm `:3000` loads
 
 ### Step 2 — useAgents Hook
 - [ ] `app/hooks/use-agents.ts`
