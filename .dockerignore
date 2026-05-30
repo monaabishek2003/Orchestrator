@@ -1,0 +1,17 @@
+**/node_modules
+**/dist
+**/.next
+**/out
+apps/server/public
+apps/server/dev.db
+.git
+.gitignore
+.vscode
+.idea
+*.log
+.DS_Store
+BUILD_PLAN.md
+CLAUDE.md
+README.md
+Dockerfile
+.dockerignore
