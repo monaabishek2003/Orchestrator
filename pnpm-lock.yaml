@@ -105,6 +105,9 @@ importers:
       tw-animate-css:
         specifier: ^1.4.0
         version: 1.4.0
+      web:
+        specifier: 'link:'
+        version: 'link:'
     devDependencies:
       '@tailwindcss/postcss':
         specifier: ^4

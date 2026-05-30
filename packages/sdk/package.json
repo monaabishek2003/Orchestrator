@@ -1,20 +1,34 @@
 {
   "name": "orchestrator-sdk",
-  "version": "0.1.0",
-  "description": "Monitor your AI Agents",
+  "version": "0.2.0",
+  "description": "Instrument AI agents with 4 methods. Monitor, pause, resume, and steer them from a local dashboard.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "keywords": [
+    "ai",
+    "agents",
+    "monitoring",
+    "orchestration",
+    "llm",
+    "observability",
+    "claude",
+    "openai"
+  ],
+  "author": "monaabishek2003",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monaabishek2003/Orchestrator"
+  },
+  "homepage": "https://github.com/monaabishek2003/Orchestrator#readme",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "packageManager": "pnpm@10.17.1",
   "devDependencies": {
     "@types/node": "^25.6.0",

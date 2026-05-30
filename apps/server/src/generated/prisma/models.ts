@@ -10,4 +10,5 @@
  */
 export type * from './models/Agent'
 export type * from './models/Event'
+export type * from './models/Intervention'
 export type * from './commonInputTypes'

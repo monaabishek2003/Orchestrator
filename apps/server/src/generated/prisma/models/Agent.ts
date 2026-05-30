@@ -30,6 +30,9 @@ export type AgentMinAggregateOutputType = {
   status: string | null
   needsAttention: boolean | null
   attentionReason: string | null
+  webhookUrl: string | null
+  currentGoal: string | null
+  currentTask: string | null
   createdAt: Date | null
   endedAt: Date | null
   lastUpdateAt: Date | null
@@ -41,6 +44,9 @@ export type AgentMaxAggregateOutputType = {
   status: string | null
   needsAttention: boolean | null
   attentionReason: string | null
+  webhookUrl: string | null
+  currentGoal: string | null
+  currentTask: string | null
   createdAt: Date | null
   endedAt: Date | null
   lastUpdateAt: Date | null
@@ -52,6 +58,9 @@ export type AgentCountAggregateOutputType = {
   status: number
   needsAttention: number
   attentionReason: number
+  webhookUrl: number
+  currentGoal: number
+  currentTask: number
   createdAt: number
   endedAt: number
   lastUpdateAt: number
@@ -65,6 +74,9 @@ export type AgentMinAggregateInputType = {
   status?: true
   needsAttention?: true
   attentionReason?: true
+  webhookUrl?: true
+  currentGoal?: true
+  currentTask?: true
   createdAt?: true
   endedAt?: true
   lastUpdateAt?: true
@@ -76,6 +88,9 @@ export type AgentMaxAggregateInputType = {
   status?: true
   needsAttention?: true
   attentionReason?: true
+  webhookUrl?: true
+  currentGoal?: true
+  currentTask?: true
   createdAt?: true
   endedAt?: true
   lastUpdateAt?: true
@@ -87,6 +102,9 @@ export type AgentCountAggregateInputType = {
   status?: true
   needsAttention?: true
   attentionReason?: true
+  webhookUrl?: true
+  currentGoal?: true
+  currentTask?: true
   createdAt?: true
   endedAt?: true
   lastUpdateAt?: true
@@ -171,6 +189,9 @@ export type AgentGroupByOutputType = {
   status: string
   needsAttention: boolean
   attentionReason: string | null
+  webhookUrl: string | null
+  currentGoal: string | null
+  currentTask: string | null
   createdAt: Date
   endedAt: Date | null
   lastUpdateAt: Date
@@ -203,10 +224,14 @@ export type AgentWhereInput = {
   status?: Prisma.StringFilter<"Agent"> | string
   needsAttention?: Prisma.BoolFilter<"Agent"> | boolean
   attentionReason?: Prisma.StringNullableFilter<"Agent"> | string | null
+  webhookUrl?: Prisma.StringNullableFilter<"Agent"> | string | null
+  currentGoal?: Prisma.StringNullableFilter<"Agent"> | string | null
+  currentTask?: Prisma.StringNullableFilter<"Agent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   events?: Prisma.EventListRelationFilter
+  interventions?: Prisma.InterventionListRelationFilter
 }
 
 export type AgentOrderByWithRelationInput = {
@@ -215,10 +240,14 @@ export type AgentOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   needsAttention?: Prisma.SortOrder
   attentionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  webhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentGoal?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentTask?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUpdateAt?: Prisma.SortOrder
   events?: Prisma.EventOrderByRelationAggregateInput
+  interventions?: Prisma.InterventionOrderByRelationAggregateInput
 }
 
 export type AgentWhereUniqueInput = Prisma.AtLeast<{
@@ -230,10 +259,14 @@ export type AgentWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.StringFilter<"Agent"> | string
   needsAttention?: Prisma.BoolFilter<"Agent"> | boolean
   attentionReason?: Prisma.StringNullableFilter<"Agent"> | string | null
+  webhookUrl?: Prisma.StringNullableFilter<"Agent"> | string | null
+  currentGoal?: Prisma.StringNullableFilter<"Agent"> | string | null
+  currentTask?: Prisma.StringNullableFilter<"Agent"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"Agent"> | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFilter<"Agent"> | Date | string
   events?: Prisma.EventListRelationFilter
+  interventions?: Prisma.InterventionListRelationFilter
 }, "id">
 
 export type AgentOrderByWithAggregationInput = {
@@ -242,6 +275,9 @@ export type AgentOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   needsAttention?: Prisma.SortOrder
   attentionReason?: Prisma.SortOrderInput | Prisma.SortOrder
+  webhookUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentGoal?: Prisma.SortOrderInput | Prisma.SortOrder
+  currentTask?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lastUpdateAt?: Prisma.SortOrder
@@ -259,6 +295,9 @@ export type AgentScalarWhereWithAggregatesInput = {
   status?: Prisma.StringWithAggregatesFilter<"Agent"> | string
   needsAttention?: Prisma.BoolWithAggregatesFilter<"Agent"> | boolean
   attentionReason?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  webhookUrl?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  currentGoal?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
+  currentTask?: Prisma.StringNullableWithAggregatesFilter<"Agent"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
   endedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Agent"> | Date | string | null
   lastUpdateAt?: Prisma.DateTimeWithAggregatesFilter<"Agent"> | Date | string
@@ -270,10 +309,14 @@ export type AgentCreateInput = {
   status?: string
   needsAttention?: boolean
   attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   lastUpdateAt?: Date | string
   events?: Prisma.EventCreateNestedManyWithoutAgentInput
+  interventions?: Prisma.InterventionCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUncheckedCreateInput = {
@@ -282,10 +325,14 @@ export type AgentUncheckedCreateInput = {
   status?: string
   needsAttention?: boolean
   attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   lastUpdateAt?: Date | string
   events?: Prisma.EventUncheckedCreateNestedManyWithoutAgentInput
+  interventions?: Prisma.InterventionUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUpdateInput = {
@@ -294,10 +341,14 @@ export type AgentUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   events?: Prisma.EventUpdateManyWithoutAgentNestedInput
+  interventions?: Prisma.InterventionUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateInput = {
@@ -306,10 +357,14 @@ export type AgentUncheckedUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   events?: Prisma.EventUncheckedUpdateManyWithoutAgentNestedInput
+  interventions?: Prisma.InterventionUncheckedUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentCreateManyInput = {
@@ -318,6 +373,9 @@ export type AgentCreateManyInput = {
   status?: string
   needsAttention?: boolean
   attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   lastUpdateAt?: Date | string
@@ -329,6 +387,9 @@ export type AgentUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -340,6 +401,9 @@ export type AgentUncheckedUpdateManyInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -351,6 +415,9 @@ export type AgentCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   needsAttention?: Prisma.SortOrder
   attentionReason?: Prisma.SortOrder
+  webhookUrl?: Prisma.SortOrder
+  currentGoal?: Prisma.SortOrder
+  currentTask?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
   lastUpdateAt?: Prisma.SortOrder
@@ -362,6 +429,9 @@ export type AgentMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   needsAttention?: Prisma.SortOrder
   attentionReason?: Prisma.SortOrder
+  webhookUrl?: Prisma.SortOrder
+  currentGoal?: Prisma.SortOrder
+  currentTask?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
   lastUpdateAt?: Prisma.SortOrder
@@ -373,6 +443,9 @@ export type AgentMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   needsAttention?: Prisma.SortOrder
   attentionReason?: Prisma.SortOrder
+  webhookUrl?: Prisma.SortOrder
+  currentGoal?: Prisma.SortOrder
+  currentTask?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
   lastUpdateAt?: Prisma.SortOrder
@@ -417,15 +490,33 @@ export type AgentUpdateOneRequiredWithoutEventsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutEventsInput, Prisma.AgentUpdateWithoutEventsInput>, Prisma.AgentUncheckedUpdateWithoutEventsInput>
 }
 
+export type AgentCreateNestedOneWithoutInterventionsInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutInterventionsInput, Prisma.AgentUncheckedCreateWithoutInterventionsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutInterventionsInput
+  connect?: Prisma.AgentWhereUniqueInput
+}
+
+export type AgentUpdateOneRequiredWithoutInterventionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AgentCreateWithoutInterventionsInput, Prisma.AgentUncheckedCreateWithoutInterventionsInput>
+  connectOrCreate?: Prisma.AgentCreateOrConnectWithoutInterventionsInput
+  upsert?: Prisma.AgentUpsertWithoutInterventionsInput
+  connect?: Prisma.AgentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AgentUpdateToOneWithWhereWithoutInterventionsInput, Prisma.AgentUpdateWithoutInterventionsInput>, Prisma.AgentUncheckedUpdateWithoutInterventionsInput>
+}
+
 export type AgentCreateWithoutEventsInput = {
   id?: string
   name: string
   status?: string
   needsAttention?: boolean
   attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   lastUpdateAt?: Date | string
+  interventions?: Prisma.InterventionCreateNestedManyWithoutAgentInput
 }
 
 export type AgentUncheckedCreateWithoutEventsInput = {
@@ -434,9 +525,13 @@ export type AgentUncheckedCreateWithoutEventsInput = {
   status?: string
   needsAttention?: boolean
   attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   lastUpdateAt?: Date | string
+  interventions?: Prisma.InterventionUncheckedCreateNestedManyWithoutAgentInput
 }
 
 export type AgentCreateOrConnectWithoutEventsInput = {
@@ -461,9 +556,13 @@ export type AgentUpdateWithoutEventsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interventions?: Prisma.InterventionUpdateManyWithoutAgentNestedInput
 }
 
 export type AgentUncheckedUpdateWithoutEventsInput = {
@@ -472,9 +571,89 @@ export type AgentUncheckedUpdateWithoutEventsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  interventions?: Prisma.InterventionUncheckedUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentCreateWithoutInterventionsInput = {
+  id?: string
+  name: string
+  status?: string
+  needsAttention?: boolean
+  attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  lastUpdateAt?: Date | string
+  events?: Prisma.EventCreateNestedManyWithoutAgentInput
+}
+
+export type AgentUncheckedCreateWithoutInterventionsInput = {
+  id?: string
+  name: string
+  status?: string
+  needsAttention?: boolean
+  attentionReason?: string | null
+  webhookUrl?: string | null
+  currentGoal?: string | null
+  currentTask?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  lastUpdateAt?: Date | string
+  events?: Prisma.EventUncheckedCreateNestedManyWithoutAgentInput
+}
+
+export type AgentCreateOrConnectWithoutInterventionsInput = {
+  where: Prisma.AgentWhereUniqueInput
+  create: Prisma.XOR<Prisma.AgentCreateWithoutInterventionsInput, Prisma.AgentUncheckedCreateWithoutInterventionsInput>
+}
+
+export type AgentUpsertWithoutInterventionsInput = {
+  update: Prisma.XOR<Prisma.AgentUpdateWithoutInterventionsInput, Prisma.AgentUncheckedUpdateWithoutInterventionsInput>
+  create: Prisma.XOR<Prisma.AgentCreateWithoutInterventionsInput, Prisma.AgentUncheckedCreateWithoutInterventionsInput>
+  where?: Prisma.AgentWhereInput
+}
+
+export type AgentUpdateToOneWithWhereWithoutInterventionsInput = {
+  where?: Prisma.AgentWhereInput
+  data: Prisma.XOR<Prisma.AgentUpdateWithoutInterventionsInput, Prisma.AgentUncheckedUpdateWithoutInterventionsInput>
+}
+
+export type AgentUpdateWithoutInterventionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.EventUpdateManyWithoutAgentNestedInput
+}
+
+export type AgentUncheckedUpdateWithoutInterventionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  needsAttention?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  attentionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  currentTask?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastUpdateAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  events?: Prisma.EventUncheckedUpdateManyWithoutAgentNestedInput
 }
 
 
@@ -484,10 +663,12 @@ export type AgentUncheckedUpdateWithoutEventsInput = {
 
 export type AgentCountOutputType = {
   events: number
+  interventions: number
 }
 
 export type AgentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   events?: boolean | AgentCountOutputTypeCountEventsArgs
+  interventions?: boolean | AgentCountOutputTypeCountInterventionsArgs
 }
 
 /**
@@ -507,6 +688,13 @@ export type AgentCountOutputTypeCountEventsArgs<ExtArgs extends runtime.Types.Ex
   where?: Prisma.EventWhereInput
 }
 
+/**
+ * AgentCountOutputType without action
+ */
+export type AgentCountOutputTypeCountInterventionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InterventionWhereInput
+}
+
 
 export type AgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -514,10 +702,14 @@ export type AgentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   status?: boolean
   needsAttention?: boolean
   attentionReason?: boolean
+  webhookUrl?: boolean
+  currentGoal?: boolean
+  currentTask?: boolean
   createdAt?: boolean
   endedAt?: boolean
   lastUpdateAt?: boolean
   events?: boolean | Prisma.Agent$eventsArgs<ExtArgs>
+  interventions?: boolean | Prisma.Agent$interventionsArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["agent"]>
 
@@ -527,6 +719,9 @@ export type AgentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   needsAttention?: boolean
   attentionReason?: boolean
+  webhookUrl?: boolean
+  currentGoal?: boolean
+  currentTask?: boolean
   createdAt?: boolean
   endedAt?: boolean
   lastUpdateAt?: boolean
@@ -538,6 +733,9 @@ export type AgentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   status?: boolean
   needsAttention?: boolean
   attentionReason?: boolean
+  webhookUrl?: boolean
+  currentGoal?: boolean
+  currentTask?: boolean
   createdAt?: boolean
   endedAt?: boolean
   lastUpdateAt?: boolean
@@ -549,14 +747,18 @@ export type AgentSelectScalar = {
   status?: boolean
   needsAttention?: boolean
   attentionReason?: boolean
+  webhookUrl?: boolean
+  currentGoal?: boolean
+  currentTask?: boolean
   createdAt?: boolean
   endedAt?: boolean
   lastUpdateAt?: boolean
 }
 
-export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "status" | "needsAttention" | "attentionReason" | "createdAt" | "endedAt" | "lastUpdateAt", ExtArgs["result"]["agent"]>
+export type AgentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "status" | "needsAttention" | "attentionReason" | "webhookUrl" | "currentGoal" | "currentTask" | "createdAt" | "endedAt" | "lastUpdateAt", ExtArgs["result"]["agent"]>
 export type AgentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   events?: boolean | Prisma.Agent$eventsArgs<ExtArgs>
+  interventions?: boolean | Prisma.Agent$interventionsArgs<ExtArgs>
   _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AgentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -566,6 +768,7 @@ export type $AgentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name: "Agent"
   objects: {
     events: Prisma.$EventPayload<ExtArgs>[]
+    interventions: Prisma.$InterventionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -573,6 +776,9 @@ export type $AgentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     status: string
     needsAttention: boolean
     attentionReason: string | null
+    webhookUrl: string | null
+    currentGoal: string | null
+    currentTask: string | null
     createdAt: Date
     endedAt: Date | null
     lastUpdateAt: Date
@@ -971,6 +1177,7 @@ readonly fields: AgentFieldRefs;
 export interface Prisma__AgentClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   events<T extends Prisma.Agent$eventsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  interventions<T extends Prisma.Agent$interventionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Agent$interventionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InterventionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1005,6 +1212,9 @@ export interface AgentFieldRefs {
   readonly status: Prisma.FieldRef<"Agent", 'String'>
   readonly needsAttention: Prisma.FieldRef<"Agent", 'Boolean'>
   readonly attentionReason: Prisma.FieldRef<"Agent", 'String'>
+  readonly webhookUrl: Prisma.FieldRef<"Agent", 'String'>
+  readonly currentGoal: Prisma.FieldRef<"Agent", 'String'>
+  readonly currentTask: Prisma.FieldRef<"Agent", 'String'>
   readonly createdAt: Prisma.FieldRef<"Agent", 'DateTime'>
   readonly endedAt: Prisma.FieldRef<"Agent", 'DateTime'>
   readonly lastUpdateAt: Prisma.FieldRef<"Agent", 'DateTime'>
@@ -1420,6 +1630,30 @@ export type Agent$eventsArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
   take?: number
   skip?: number
   distinct?: Prisma.EventScalarFieldEnum | Prisma.EventScalarFieldEnum[]
+}
+
+/**
+ * Agent.interventions
+ */
+export type Agent$interventionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Intervention
+   */
+  select?: Prisma.InterventionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Intervention
+   */
+  omit?: Prisma.InterventionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InterventionInclude<ExtArgs> | null
+  where?: Prisma.InterventionWhereInput
+  orderBy?: Prisma.InterventionOrderByWithRelationInput | Prisma.InterventionOrderByWithRelationInput[]
+  cursor?: Prisma.InterventionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InterventionScalarFieldEnum | Prisma.InterventionScalarFieldEnum[]
 }
 
 /**

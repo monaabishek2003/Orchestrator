@@ -12,6 +12,27 @@ const styles: Record<
     text: "text-blue-700 dark:text-blue-400",
     border: "border-blue-200 dark:border-blue-800/60",
   },
+  paused: {
+    label: "Paused",
+    dot: "bg-amber-400",
+    bg: "bg-amber-50 dark:bg-amber-950/20",
+    text: "text-amber-700 dark:text-amber-400",
+    border: "border-amber-200 dark:border-amber-800/60",
+  },
+  waiting: {
+    label: "Waiting",
+    dot: "bg-indigo-400",
+    bg: "bg-indigo-50 dark:bg-indigo-950/20",
+    text: "text-indigo-700 dark:text-indigo-400",
+    border: "border-indigo-200 dark:border-indigo-800/60",
+  },
+  error: {
+    label: "Error",
+    dot: "bg-red-500 animate-pulse",
+    bg: "bg-red-50 dark:bg-red-950/20",
+    text: "text-red-700 dark:text-red-400",
+    border: "border-red-200 dark:border-red-800/60",
+  },
   done: {
     label: "Done",
     dot: "bg-neutral-400 dark:bg-neutral-500",

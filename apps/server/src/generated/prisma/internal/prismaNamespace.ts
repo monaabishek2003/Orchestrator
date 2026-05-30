@@ -385,7 +385,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Agent: 'Agent',
-  Event: 'Event'
+  Event: 'Event',
+  Intervention: 'Intervention'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "agent" | "event"
+    modelProps: "agent" | "event" | "intervention"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Intervention: {
+      payload: Prisma.$InterventionPayload<ExtArgs>
+      fields: Prisma.InterventionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InterventionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InterventionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        findFirst: {
+          args: Prisma.InterventionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InterventionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        findMany: {
+          args: Prisma.InterventionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>[]
+        }
+        create: {
+          args: Prisma.InterventionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        createMany: {
+          args: Prisma.InterventionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InterventionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>[]
+        }
+        delete: {
+          args: Prisma.InterventionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        update: {
+          args: Prisma.InterventionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        deleteMany: {
+          args: Prisma.InterventionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InterventionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InterventionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>[]
+        }
+        upsert: {
+          args: Prisma.InterventionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterventionPayload>
+        }
+        aggregate: {
+          args: Prisma.InterventionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateIntervention>
+        }
+        groupBy: {
+          args: Prisma.InterventionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterventionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InterventionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterventionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -595,6 +670,9 @@ export const AgentScalarFieldEnum = {
   status: 'status',
   needsAttention: 'needsAttention',
   attentionReason: 'attentionReason',
+  webhookUrl: 'webhookUrl',
+  currentGoal: 'currentGoal',
+  currentTask: 'currentTask',
   createdAt: 'createdAt',
   endedAt: 'endedAt',
   lastUpdateAt: 'lastUpdateAt'
@@ -614,6 +692,17 @@ export const EventScalarFieldEnum = {
 } as const
 
 export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const InterventionScalarFieldEnum = {
+  id: 'id',
+  agentId: 'agentId',
+  type: 'type',
+  payload: 'payload',
+  createdAt: 'createdAt'
+} as const
+
+export type InterventionScalarFieldEnum = (typeof InterventionScalarFieldEnum)[keyof typeof InterventionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -784,6 +873,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   agent?: Prisma.AgentOmit
   event?: Prisma.EventOmit
+  intervention?: Prisma.InterventionOmit
 }
 
 /* Types for Logging */

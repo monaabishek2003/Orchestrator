@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Agent: 'Agent',
-  Event: 'Event'
+  Event: 'Event',
+  Intervention: 'Intervention'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -74,6 +75,9 @@ export const AgentScalarFieldEnum = {
   status: 'status',
   needsAttention: 'needsAttention',
   attentionReason: 'attentionReason',
+  webhookUrl: 'webhookUrl',
+  currentGoal: 'currentGoal',
+  currentTask: 'currentTask',
   createdAt: 'createdAt',
   endedAt: 'endedAt',
   lastUpdateAt: 'lastUpdateAt'
@@ -93,6 +97,17 @@ export const EventScalarFieldEnum = {
 } as const
 
 export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
+
+
+export const InterventionScalarFieldEnum = {
+  id: 'id',
+  agentId: 'agentId',
+  type: 'type',
+  payload: 'payload',
+  createdAt: 'createdAt'
+} as const
+
+export type InterventionScalarFieldEnum = (typeof InterventionScalarFieldEnum)[keyof typeof InterventionScalarFieldEnum]
 
 
 export const SortOrder = {

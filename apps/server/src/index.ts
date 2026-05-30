@@ -20,6 +20,9 @@ import { initSocket } from './socket';
       "status" TEXT NOT NULL DEFAULT 'running',
       "needsAttention" BOOLEAN NOT NULL DEFAULT false,
       "attentionReason" TEXT,
+      "webhookUrl" TEXT,
+      "currentGoal" TEXT,
+      "currentTask" TEXT,
       "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       "endedAt" DATETIME,
       "lastUpdateAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -34,7 +37,19 @@ import { initSocket } from './socket';
       "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       CONSTRAINT "Event_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
     );
+    CREATE TABLE IF NOT EXISTS "Intervention" (
+      "id" TEXT NOT NULL PRIMARY KEY,
+      "agentId" TEXT NOT NULL,
+      "type" TEXT NOT NULL,
+      "payload" TEXT,
+      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "Intervention_agentId_fkey" FOREIGN KEY ("agentId") REFERENCES "Agent" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    );
   `);
+  // Add new columns to existing Agent tables (ALTER TABLE IF NOT EXISTS column not supported in SQLite)
+  for (const col of ['webhookUrl TEXT', 'currentGoal TEXT', 'currentTask TEXT']) {
+    try { db.exec(`ALTER TABLE "Agent" ADD COLUMN ${col}`); } catch { /* column already exists */ }
+  }
   db.close();
 }
 

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Activity, AlertTriangle, CheckCircle2, Layers } from "lucide-react";
+import { Activity, AlertTriangle, CheckCircle2, Layers, PauseCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
@@ -19,10 +19,16 @@ const STATS = [
     iconBg: "bg-blue-50 dark:bg-blue-950/30",
   },
   {
-    label: "Needs Attention",
-    icon: AlertTriangle,
+    label: "Paused",
+    icon: PauseCircle,
     color: "text-amber-600 dark:text-amber-400",
     iconBg: "bg-amber-50 dark:bg-amber-950/30",
+  },
+  {
+    label: "Needs Attention",
+    icon: AlertTriangle,
+    color: "text-rose-600 dark:text-rose-400",
+    iconBg: "bg-rose-50 dark:bg-rose-950/30",
   },
   {
     label: "Completed",
@@ -33,15 +39,14 @@ const STATS = [
 ] as const;
 
 function computeCounts(agents: Agent[]) {
-  let running = 0,
-    attention = 0,
-    done = 0;
+  let running = 0, paused = 0, attention = 0, done = 0;
   for (const a of agents) {
     if (a.status === "running") running++;
+    if (a.status === "paused") paused++;
     if (a.needsAttention) attention++;
     if (a.status === "done") done++;
   }
-  return [agents.length, running, attention, done];
+  return [agents.length, running, paused, attention, done];
 }
 
 export function StatCards({
@@ -54,7 +59,7 @@ export function StatCards({
   const counts = useMemo(() => computeCounts(agents), [agents]);
 
   return (
-    <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
       {STATS.map(({ label, icon: Icon, color, iconBg }, i) => (
         <Card key={label}>
           <CardContent className="flex items-center gap-4 p-5">

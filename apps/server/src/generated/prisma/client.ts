@@ -51,3 +51,8 @@ export type Agent = Prisma.AgentModel
  * 
  */
 export type Event = Prisma.EventModel
+/**
+ * Model Intervention
+ * 
+ */
+export type Intervention = Prisma.InterventionModel

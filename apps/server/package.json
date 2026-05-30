@@ -1,7 +1,7 @@
 {
   "name": "orchestrator-server",
-  "version": "0.1.0",
-  "description": "Monitor your AI agents — local dashboard server",
+  "version": "0.2.0",
+  "description": "Local dashboard server for monitoring and controlling AI agents. Pairs with orchestrator-sdk.",
   "type": "module",
   "main": "./dist/index.js",
   "bin": {
@@ -13,14 +13,31 @@
     "prisma.config.ts",
     "public"
   ],
+  "keywords": [
+    "ai",
+    "agents",
+    "monitoring",
+    "dashboard",
+    "orchestration",
+    "llm",
+    "observability",
+    "claude",
+    "openai",
+    "control-plane"
+  ],
+  "author": "monaabishek2003",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/monaabishek2003/Orchestrator"
+  },
+  "homepage": "https://github.com/monaabishek2003/Orchestrator#readme",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
-    "build": "tsup"
+    "build": "tsup",
+    "seed": "tsx prisma/seed.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "packageManager": "pnpm@10.17.1",
   "dependencies": {
     "@prisma/adapter-better-sqlite3": "^7.8.0",

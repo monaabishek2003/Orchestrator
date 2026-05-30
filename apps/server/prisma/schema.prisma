@@ -13,24 +13,37 @@ datasource db {
 }
 
 model Agent {
-  id              String   @id @default(cuid())
+  id              String         @id @default(cuid())
   name            String
-  status          String   @default("running")
-  needsAttention  Boolean  @default(false)
+  status          String         @default("running")
+  needsAttention  Boolean        @default(false)
   attentionReason String?
-  createdAt       DateTime @default(now())
+  webhookUrl      String?
+  currentGoal     String?
+  currentTask     String?
+  createdAt       DateTime       @default(now())
   endedAt         DateTime?
-  lastUpdateAt    DateTime @default(now())
+  lastUpdateAt    DateTime       @default(now())
   events          Event[]
+  interventions   Intervention[]
 }
 
 model Event {
   id        String   @id @default(cuid())
   agentId   String
-  type      String   // "info" | "error"
+  type      String   // "info" | "error" | "warning" | "paused" | "resumed" | "instruction_modified"
   message   String
   tokens    Int?
   cost      Float?
   timestamp DateTime @default(now())
+  agent     Agent    @relation(fields: [agentId], references: [id])
+}
+
+model Intervention {
+  id        String   @id @default(cuid())
+  agentId   String
+  type      String   // "pause" | "resume" | "modify_instruction"
+  payload   String?
+  createdAt DateTime @default(now())
   agent     Agent    @relation(fields: [agentId], references: [id])
 }
