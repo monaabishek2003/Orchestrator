@@ -2,8 +2,10 @@ packages:
   - apps/*
   - packages/*
   - examples
+  - demo-app
 
 onlyBuiltDependencies:
   - '@prisma/engines'
   - better-sqlite3
+  - esbuild
   - prisma

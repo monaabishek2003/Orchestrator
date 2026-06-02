@@ -1,6 +1,6 @@
 {
   "name": "orchestrator-server",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Local dashboard server for monitoring and controlling AI agents. Pairs with orchestrator-sdk.",
   "type": "module",
   "main": "./dist/index.js",
@@ -36,7 +36,8 @@
     "dev": "tsx watch src/index.ts",
     "start": "tsx src/index.ts",
     "build": "tsup",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "prepublish": "pnpm --filter web export && pnpm --filter orchestrator-server build"
   },
   "packageManager": "pnpm@10.17.1",
   "dependencies": {

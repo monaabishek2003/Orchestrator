@@ -1,14 +1,14 @@
 import "dotenv/config";
-import os from 'os';
 import path from 'path';
 import fs from 'fs';
 import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../generated/prisma/client";
 
 // In dev, .env provides DATABASE_URL (e.g. file:./dev.db).
-// In production (npx), fall back to ~/.orchestrator/dev.db.
+// In production (npx), use .orchestrator/dev.db in the current working directory
+// so each project gets its own isolated database.
 if (!process.env.DATABASE_URL) {
-  const dir = path.join(os.homedir(), '.orchestrator');
+  const dir = path.join(process.cwd(), '.orchestrator');
   fs.mkdirSync(dir, { recursive: true });
   process.env.DATABASE_URL = `file:${path.join(dir, 'dev.db')}`;
 }
