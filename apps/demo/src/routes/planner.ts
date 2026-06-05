@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import Anthropic from '@anthropic-ai/sdk';
 import { createTicket } from '../db.js';
+import { logger } from '../logger.js';
 
 const router = Router();
 
@@ -36,14 +37,17 @@ Rules:
 - Ticket 4 MUST contain an unresolved product question — this is intentional.`;
 
 router.post('/generate', async (req, res) => {
+  const startTime = Date.now();
   try {
     const { prd } = req.body as { prd: string };
 
     if (!prd || typeof prd !== 'string') {
+      logger.warn('PLANNER', 'Invalid PRD received', { hasPrd: !!prd, type: typeof prd });
       res.status(400).json({ error: 'prd (string) is required in the request body' });
       return;
     }
 
+    logger.info('PLANNER', '🤖 Calling Claude API to generate tickets', { prdLength: prd.length });
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     const message = await client.messages.create({
@@ -53,16 +57,21 @@ router.post('/generate', async (req, res) => {
       system: PLANNER_SYSTEM_PROMPT,
       messages: [{ role: 'user', content: `Here is the PRD:\n\n${prd}` }],
     });
+    const apiTime = Date.now() - startTime;
+    logger.info('PLANNER', `✅ Claude API responded in ${apiTime}ms`);
     
     const textBlock = message.content.find((b) => b.type === 'text');
     if (!textBlock || textBlock.type !== 'text') {
+        logger.error('PLANNER', 'No text content in Claude response', { contentBlocks: message.content.length });
         res.status(500).json({ error: 'No text content in Claude response' });``
         return;
     }
     
     let jsonText = textBlock.text.trim();
+    logger.debug('PLANNER', 'Parsing Claude response', { responseLength: jsonText.length });
 
     if (jsonText.startsWith('```')) {
+      logger.debug('PLANNER', 'Stripping markdown code fences from response');
       jsonText = jsonText
         .replace(/^```json\s*/i, '')
         .replace(/^```\s*/i, '')
@@ -72,21 +81,25 @@ router.post('/generate', async (req, res) => {
     const parsed = JSON.parse(jsonText) as {
       tickets: { title: string; description: string; assignedRole: string; sortOrder: number }[];
     };
+    logger.info('PLANNER', `📋 Parsed ${parsed.tickets.length} tickets from Claude response`);
 
-    const created = parsed.tickets.map((t) =>
-      createTicket({
+    const created = parsed.tickets.map((t) => {
+      logger.debug('PLANNER', `Creating ticket #${t.sortOrder}: ${t.title}`, { role: t.assignedRole });
+      return createTicket({
         title: t.title,
         description: t.description,
         assignedRole: t.assignedRole,
         sortOrder: t.sortOrder,
-      })
-    );
+      });
+    });
 
+    const totalTime = Date.now() - startTime;
+    logger.info('PLANNER', `✅ Generated ${created.length} tickets in ${totalTime}ms`);
     res.json({ tickets: created });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     const cause = err instanceof Error && (err as NodeJS.ErrnoException).cause;
-    console.error('Error generating tickets:', message, cause ?? '');
+    logger.error('PLANNER', 'Failed to generate tickets', { error: message, cause: cause ? String(cause) : undefined, stack: err instanceof Error ? err.stack : undefined });
     res.status(500).json({ error: message, cause: cause ? String(cause) : undefined });
   }
 });

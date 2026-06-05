@@ -1,6 +1,7 @@
 import { Agent } from 'orchestrator-sdk';
 import { getAllTickets, getTicketBySort, updateTicket, deleteAllTickets } from './db.js';
 import { DEMO_SCRIPTS } from './demo-scripts.js';
+import { logger } from './logger.js';
 
 const TIMING = {
   STEP_DELAY: 3000,       // ms between each reasoning step
@@ -17,22 +18,33 @@ function delay(ms: number): Promise<void> {
 
 async function runTicket(sortOrder: number): Promise<void> {
   const script = DEMO_SCRIPTS[sortOrder];
-  if (!script) return;
+  if (!script) {
+    logger.warn('RUNNER', 'No script found for ticket', { sortOrder });
+    return;
+  }
 
   const ticket = getTicketBySort(sortOrder);
-  if (!ticket) return;
+  if (!ticket) {
+    logger.warn('RUNNER', 'No ticket found in DB', { sortOrder });
+    return;
+  }
 
+  logger.info('RUNNER', `🎫 Starting ticket #${sortOrder}: ${ticket.title}`, { role: script.role });
   updateTicket(ticket.id, { status: 'in_progress' });
 
   const agent = new Agent(script.agentName, 'http://localhost:8000');
+  logger.debug('RUNNER', `Initializing agent: ${script.agentName}`);
   await agent.start();
 
-  for (const stepMessage of script.steps) {
+  for (let i = 0; i < script.steps.length; i++) {
+    logger.debug('RUNNER', `⏱️  Waiting ${TIMING.STEP_DELAY}ms before step ${i + 1}/${script.steps.length}`);
     await delay(TIMING.STEP_DELAY);
-    await agent.step(stepMessage);
+    logger.info('RUNNER', `📝 Step ${i + 1}/${script.steps.length}: ${script.steps[i].substring(0, 60)}...`);
+    await agent.step(script.steps[i]);
   }
 
   if (script.needsInput) {
+    logger.warn('RUNNER', `⏸️  Ticket #${sortOrder} needs PM input - pausing demo`, { question: script.needsInput.question.substring(0, 80) + '...' });
     updateTicket(ticket.id, {
       status: 'needs_input',
       question: script.needsInput.question,
@@ -41,59 +53,76 @@ async function runTicket(sortOrder: number): Promise<void> {
     return; // pause — wait for answerQuestion()
   }
 
+  logger.info('RUNNER', `✅ Ticket #${sortOrder} complete - ending agent`);
   await agent.end();
   updateTicket(ticket.id, { status: 'done' });
+  logger.debug('RUNNER', `⏱️  Waiting ${TIMING.TICKET_GAP}ms before next ticket`);
   await delay(TIMING.TICKET_GAP);
 }
 
 async function runRemainingTickets(): Promise<void> {
+  logger.info('RUNNER', '🚀 Phase 4: Running remaining tickets (5-6)');
   try {
     await runTicket(5);
   } catch (err) {
-    console.error('[demo-runner] Error in ticket 5:', err);
+    logger.error('RUNNER', 'Error in ticket 5', { error: err instanceof Error ? err.message : String(err) });
   }
   try {
     await runTicket(6);
   } catch (err) {
-    console.error('[demo-runner] Error in ticket 6:', err);
+    logger.error('RUNNER', 'Error in ticket 6', { error: err instanceof Error ? err.message : String(err) });
   }
+  logger.info('RUNNER', '🎉 Demo complete - all tickets processed');
   demoRunning = false;
 }
 
 export async function startDemo(): Promise<void> {
+  logger.info('RUNNER', '═══════════════════════════════════════');
+  logger.info('RUNNER', '🚀 Starting demo run');
+  logger.info('RUNNER', '═══════════════════════════════════════');
   demoRunning = true;
   pausedState = null;
 
   try {
-    // Phase 1: ticket 1 alone
+    logger.info('RUNNER', '🚀 Phase 1: Backend foundation (ticket 1)');
     await runTicket(1);
 
-    // Phase 2: tickets 2 + 3 — set both in_progress first for parallel kanban feel, then run sequentially
+    logger.info('RUNNER', '🚀 Phase 2: Parallel development (tickets 2-3)');
     const t2 = getTicketBySort(2);
     const t3 = getTicketBySort(3);
-    if (t2) updateTicket(t2.id, { status: 'in_progress' });
-    if (t3) updateTicket(t3.id, { status: 'in_progress' });
+    if (t2) {
+      updateTicket(t2.id, { status: 'in_progress' });
+      logger.debug('RUNNER', 'Pre-marked ticket 2 as in_progress for parallel UI feel');
+    }
+    if (t3) {
+      updateTicket(t3.id, { status: 'in_progress' });
+      logger.debug('RUNNER', 'Pre-marked ticket 3 as in_progress for parallel UI feel');
+    }
     await runTicket(2);
     await runTicket(3);
 
-    // Phase 3: ticket 4 — may pause at needs_input
+    logger.info('RUNNER', '🚀 Phase 3: Dashboard feature (ticket 4)');
     await runTicket(4);
 
-    // If ticket 4 had needsInput, runTicket() returned early and we're paused.
-    // runRemainingTickets() will be called from answerQuestion() instead.
     if (!pausedState) {
       await runRemainingTickets();
+    } else {
+      logger.info('RUNNER', '⏸️  Demo paused - waiting for PM input');
     }
   } catch (err) {
-    console.error('[demo-runner] Error in startDemo:', err);
+    logger.error('RUNNER', 'Fatal error in startDemo', { error: err instanceof Error ? err.message : String(err), stack: err instanceof Error ? err.stack : undefined });
     demoRunning = false;
   }
 }
 
 export async function answerQuestion(ticketId: string, answer: string): Promise<void> {
+  logger.info('RUNNER', '▶️  Resuming demo with PM answer', { ticketId, answerLength: answer.length });
   updateTicket(ticketId, { answer, status: 'in_progress' });
 
-  if (!pausedState) return;
+  if (!pausedState) {
+    logger.warn('RUNNER', 'No paused state found - demo may have been reset');
+    return;
+  }
 
   const { ticketSortOrder, agentInstance } = pausedState;
   const script = DEMO_SCRIPTS[ticketSortOrder];
@@ -101,24 +130,30 @@ export async function answerQuestion(ticketId: string, answer: string): Promise<
 
   try {
     const afterSteps = script.needsInput?.afterAnswer ?? [];
-    for (const stepMessage of afterSteps) {
+    logger.info('RUNNER', `Completing ticket #${ticketSortOrder} with ${afterSteps.length} remaining steps`);
+    for (let i = 0; i < afterSteps.length; i++) {
+      logger.debug('RUNNER', `⏱️  Waiting ${TIMING.STEP_DELAY}ms before step ${i + 1}/${afterSteps.length}`);
       await delay(TIMING.STEP_DELAY);
-      await agentInstance.step(stepMessage);
+      logger.info('RUNNER', `📝 Step ${i + 1}/${afterSteps.length}: ${afterSteps[i].substring(0, 60)}...`);
+      await agentInstance.step(afterSteps[i]);
     }
+    logger.info('RUNNER', `✅ Ticket #${ticketSortOrder} complete - ending agent`);
     await agentInstance.end();
     updateTicket(ticketId, { status: 'done' });
+    logger.debug('RUNNER', `⏱️  Waiting ${TIMING.TICKET_GAP}ms before resuming`);
     await delay(TIMING.TICKET_GAP);
 
-    // Continue with phase 4 tickets
     await runRemainingTickets();
   } catch (err) {
-    console.error('[demo-runner] Error in answerQuestion:', err);
+    logger.error('RUNNER', 'Error in answerQuestion', { error: err instanceof Error ? err.message : String(err), stack: err instanceof Error ? err.stack : undefined });
     demoRunning = false;
   }
 }
 
 export async function resetDemo(): Promise<void> {
+  logger.info('RUNNER', '🔄 Resetting demo - clearing all state');
   demoRunning = false;
   pausedState = null;
   deleteAllTickets();
+  logger.info('RUNNER', 'Demo reset complete');
 }

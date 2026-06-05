@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import { mkdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { logger } from './logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,7 +10,9 @@ const __dirname = dirname(__filename);
 const dataDir = join(__dirname, '../data');
 mkdirSync(dataDir, { recursive: true });
 
-const db = new Database(join(dataDir, 'demo.db'));
+const dbPath = join(dataDir, 'demo.db');
+logger.info('DATABASE', `Initializing SQLite database at ${dbPath}`);
+const db = new Database(dbPath);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS tickets (
@@ -26,6 +29,7 @@ db.exec(`
     updatedAt TEXT NOT NULL DEFAULT (datetime('now'))
   );
 `);
+logger.info('DATABASE', 'Tickets table initialized');
 
 export interface Ticket {
   id: string;
@@ -42,11 +46,15 @@ export interface Ticket {
 }
 
 export function getAllTickets(): Ticket[] {
-  return db.prepare('SELECT * FROM tickets ORDER BY sortOrder ASC').all() as Ticket[];
+  const tickets = db.prepare('SELECT * FROM tickets ORDER BY sortOrder ASC').all() as Ticket[];
+  logger.debug('DATABASE', `getAllTickets() -> ${tickets.length} tickets`);
+  return tickets;
 }
 
 export function getTicket(id: string): Ticket | undefined {
-  return db.prepare('SELECT * FROM tickets WHERE id = ?').get(id) as Ticket | undefined;
+  const ticket = db.prepare('SELECT * FROM tickets WHERE id = ?').get(id) as Ticket | undefined;
+  logger.debug('DATABASE', `getTicket(${id}) -> ${ticket ? 'found' : 'not found'}`);
+  return ticket;
 }
 
 export function createTicket(data: {
@@ -56,6 +64,7 @@ export function createTicket(data: {
   sortOrder: number;
 }): Ticket {
   const id = crypto.randomUUID();
+  logger.info('DATABASE', `Creating ticket #${data.sortOrder}: ${data.title}`, { role: data.assignedRole });
   db.prepare(`
     INSERT INTO tickets (id, title, description, assignedRole, sortOrder)
     VALUES (?, ?, ?, ?, ?)
@@ -70,6 +79,7 @@ export function updateTicket(
   const fields = Object.keys(data) as (keyof typeof data)[];
   if (fields.length === 0) return getTicket(id);
 
+  logger.debug('DATABASE', `Updating ticket ${id}`, { fields: fields.join(', '), status: data.status });
   const setClauses = fields.map((f) => `${f} = ?`).join(', ');
   const values = fields.map((f) => data[f] ?? null);
 
@@ -83,13 +93,17 @@ export function updateTicket(
 }
 
 export function deleteAllTickets(): void {
+  const count = db.prepare('SELECT COUNT(*) as count FROM tickets').get() as { count: number };
+  logger.info('DATABASE', `Deleting all tickets`, { count: count.count });
   db.prepare('DELETE FROM tickets').run();
 }
 
 export function getTicketBySort(sortOrder: number): Ticket | undefined {
-  return db
+  const ticket = db
     .prepare('SELECT * FROM tickets WHERE sortOrder = ?')
     .get(sortOrder) as Ticket | undefined;
+  logger.debug('DATABASE', `getTicketBySort(${sortOrder}) -> ${ticket ? ticket.title : 'not found'}`);
+  return ticket;
 }
 
 export default db;
