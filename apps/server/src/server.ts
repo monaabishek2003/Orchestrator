@@ -7,6 +7,7 @@ import express, { type Express } from "express";
 import { Server as SocketIOServer } from "socket.io";
 
 import { taskRouter } from "./routes/tasks.js";
+import { workspaceRouter } from "./routes/workspace.js";
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
@@ -45,6 +46,7 @@ app.get("/health", (_req, res) => {
 });
 
 app.use("/api", taskRouter);
+app.use("/api", workspaceRouter);
 
 if (isProduction) {
   app.use(express.static(webOutDir));
