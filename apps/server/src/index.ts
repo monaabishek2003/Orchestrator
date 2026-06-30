@@ -1,6 +1,6 @@
-import { prisma, runMigrations } from "./db.js";
+import { ensureDataDir, runMigrations } from "./db.js";
+import { startServer } from "./server.js";
 
+ensureDataDir();
 runMigrations();
-console.log("Orchestrator database ready — migrations applied.");
-
-await prisma.$disconnect();
+startServer();

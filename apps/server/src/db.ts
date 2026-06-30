@@ -13,19 +13,24 @@ const moduleDir = dirname(fileURLToPath(import.meta.url));
 const schemaPath = resolve(moduleDir, "..", "prisma", "schema.prisma");
 
 /** `~/.orchestrator` directory that holds the SQLite database. */
-const dataDir = join(homedir(), ".orchestrator");
+export const dataDir = join(homedir(), ".orchestrator");
 
 /** Absolute path to the SQLite database file. */
 const dbPath = join(dataDir, "data.db");
+
+/** Ensure the `~/.orchestrator` directory exists. */
+export function ensureDataDir(): void {
+  if (!existsSync(dataDir)) {
+    mkdirSync(dataDir, { recursive: true });
+  }
+}
 
 /**
  * Ensure the data directory exists and the DATABASE_URL environment variable
  * points at the SQLite file before the Prisma client is instantiated.
  */
 function configureDatabaseUrl(): void {
-  if (!existsSync(dataDir)) {
-    mkdirSync(dataDir, { recursive: true });
-  }
+  ensureDataDir();
   if (!process.env["DATABASE_URL"]) {
     process.env["DATABASE_URL"] = `file:${dbPath}`;
   }
