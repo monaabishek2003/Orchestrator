@@ -6,6 +6,8 @@ import cors from "cors";
 import express, { type Express } from "express";
 import { Server as SocketIOServer } from "socket.io";
 
+import { taskRouter } from "./routes/tasks.js";
+
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
 /** Port the HTTP server listens on. */
@@ -41,6 +43,8 @@ app.use(express.json());
 app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
+
+app.use("/api", taskRouter);
 
 if (isProduction) {
   app.use(express.static(webOutDir));
