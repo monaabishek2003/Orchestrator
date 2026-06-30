@@ -8,6 +8,10 @@ import {
   unregisterProcess,
 } from "../services/process-registry.js";
 import {
+  addSpent,
+  checkWorkspaceBudget,
+} from "../services/workspace-budget.js";
+import {
   DEFAULT_MODEL,
   TokenAccumulator,
   calculateCost,
@@ -170,6 +174,15 @@ export async function startTask(
 
     emitTaskUpdate(updatedTask);
     emitTaskEvent(record);
+
+    // Workspace-wide budget enforcement: add this event's cost to the shared
+    // total and hard-stop ALL running tasks if the cap has been reached.
+    await addSpent(incrementalCost);
+    const workspaceExceeded = await checkWorkspaceBudget();
+    if (workspaceExceeded) {
+      // kill-all has already killed this task's process and settled its state.
+      settled = true;
+    }
   }
 
   async function handleExit(
