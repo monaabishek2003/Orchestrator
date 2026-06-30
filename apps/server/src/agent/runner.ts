@@ -12,6 +12,7 @@ import {
   addSpent,
   checkWorkspaceBudget,
 } from "../services/workspace-budget.js";
+import { attemptPullRequest } from "../services/pr.js";
 import {
   DEFAULT_MODEL,
   TokenAccumulator,
@@ -238,6 +239,12 @@ export async function startTask(
     });
     unregisterProcess(taskId);
     emitTaskUpdate(updated);
+
+    // On successful completion, attempt a PR in the background. Fire-and-forget:
+    // never blocks completion, never affects task status.
+    if (updated.status === "done") {
+      void attemptPullRequest(updated);
+    }
   }
 
   async function handleError(error: Error): Promise<void> {
