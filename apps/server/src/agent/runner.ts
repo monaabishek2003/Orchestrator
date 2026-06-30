@@ -1,4 +1,5 @@
 import type { Task, Event } from "@prisma/client";
+import { existsSync } from "node:fs";
 
 import { prisma } from "../db.js";
 import { createWorktree, slugify } from "../git.js";
@@ -79,6 +80,14 @@ export async function startTask(
     if (!task.sessionId) {
       throw new Error(`Task ${taskId} has no session ID to resume.`);
     }
+    worktreePath = task.worktreePath;
+    branchName = task.branchName;
+  } else if (
+    task.worktreePath &&
+    task.branchName &&
+    existsSync(task.worktreePath)
+  ) {
+    // Reuse an existing worktree (e.g. on retry) instead of creating a new one.
     worktreePath = task.worktreePath;
     branchName = task.branchName;
   } else {
@@ -190,6 +199,15 @@ export async function startTask(
     signal: NodeJS.Signals | null,
   ): Promise<void> {
     if (settled) return;
+
+    // Skip if the task was already moved to a terminal state externally
+    // (e.g. stopTask killed the process and set status itself).
+    const current = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!current || current.status !== "running") {
+      settled = true;
+      unregisterProcess(taskId);
+      return;
+    }
     settled = true;
 
     const completedAt = new Date();
@@ -217,6 +235,14 @@ export async function startTask(
 
   async function handleError(error: Error): Promise<void> {
     if (settled) return;
+
+    // Skip if the task was already moved to a terminal state externally.
+    const current = await prisma.task.findUnique({ where: { id: taskId } });
+    if (!current || current.status !== "running") {
+      settled = true;
+      unregisterProcess(taskId);
+      return;
+    }
     settled = true;
 
     const updated = await prisma.task.update({
