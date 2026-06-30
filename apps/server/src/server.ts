@@ -8,6 +8,11 @@ import { Server as SocketIOServer } from "socket.io";
 
 import { taskRouter } from "./routes/tasks.js";
 import { workspaceRouter } from "./routes/workspace.js";
+import { sendMessage } from "./services/task-lifecycle.js";
+import {
+  SocketEvents,
+  type TaskSendMessagePayload,
+} from "./shared/events.js";
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
@@ -54,6 +59,26 @@ if (isProduction) {
 
 io.on("connection", (socket) => {
   console.log(`Socket connected: ${socket.id}`);
+
+  // Client acknowledges it wants real-time updates. No-op for now since all
+  // connected clients already receive broadcasts; defined to establish the
+  // contract for future scoping.
+  socket.on(SocketEvents.WORKSPACE_SUBSCRIBE, () => {
+    // intentionally empty
+  });
+
+  // Mid-task messaging over Socket.io (alternative to POST /:id/message).
+  socket.on(
+    SocketEvents.TASK_SEND_MESSAGE,
+    (payload: TaskSendMessagePayload) => {
+      void sendMessage(payload.taskId, payload.message).catch((err: unknown) => {
+        console.error(
+          `task:send-message failed for ${payload?.taskId}: ${String(err)}`,
+        );
+      });
+    },
+  );
+
   socket.on("disconnect", () => {
     console.log(`Socket disconnected: ${socket.id}`);
   });

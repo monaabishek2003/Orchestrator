@@ -13,6 +13,7 @@ import {
   checkWorkspaceBudget,
 } from "../services/workspace-budget.js";
 import { attemptPullRequest } from "../services/pr.js";
+import { SocketEvents } from "../shared/events.js";
 import {
   DEFAULT_MODEL,
   TokenAccumulator,
@@ -36,12 +37,12 @@ export interface StartTaskOptions {
 
 /** Broadcast the full updated task after a DB write. */
 function emitTaskUpdate(task: Task): void {
-  io.emit("tasks:update", task);
+  io.emit(SocketEvents.TASKS_UPDATE, task);
 }
 
 /** Broadcast a newly persisted event for the live step feed. */
 function emitTaskEvent(event: Event): void {
-  io.emit("task:event", event);
+  io.emit(SocketEvents.TASK_EVENT, event);
 }
 
 /**

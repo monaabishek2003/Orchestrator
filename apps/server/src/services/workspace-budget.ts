@@ -3,13 +3,14 @@ import type { WorkspaceBudget } from "@prisma/client";
 import { prisma } from "../db.js";
 import { io } from "../server.js";
 import { getAllRunningProcesses, unregisterProcess } from "./process-registry.js";
+import { SocketEvents } from "../shared/events.js";
 
 /** Fixed ID for the singleton WorkspaceBudget row. */
 export const WORKSPACE_BUDGET_ID = "workspace-budget-singleton";
 
 /** Broadcast the full workspace budget record after a write. */
 function emitWorkspaceUpdate(budget: WorkspaceBudget): void {
-  io.emit("workspace:update", budget);
+  io.emit(SocketEvents.WORKSPACE_UPDATE, budget);
 }
 
 /**
@@ -88,10 +89,10 @@ async function killAll(budget: WorkspaceBudget): Promise<void> {
         errorInfo: "Workspace budget exceeded",
       },
     });
-    io.emit("tasks:update", updated);
+    io.emit(SocketEvents.TASKS_UPDATE, updated);
   }
 
-  io.emit("workspace:budget-exceeded", budget);
+  io.emit(SocketEvents.WORKSPACE_BUDGET_EXCEEDED, budget);
 }
 
 /**

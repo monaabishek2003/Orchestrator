@@ -6,6 +6,7 @@ import {
   getWorkspaceBudget,
   setWorkspaceBudgetCap,
 } from "../services/workspace-budget.js";
+import { SocketEvents } from "../shared/events.js";
 
 export const workspaceRouter: Router = Router();
 
@@ -82,7 +83,7 @@ workspaceRouter.put(
       }
 
       const updated = await setWorkspaceBudgetCap(budgetCap);
-      io.emit("workspace:update", updated);
+      io.emit(SocketEvents.WORKSPACE_UPDATE, updated);
       return res.status(200).json(updated);
     } catch (error) {
       return sendError(res, 500, (error as Error).message);

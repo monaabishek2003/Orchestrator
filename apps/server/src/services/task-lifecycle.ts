@@ -5,6 +5,7 @@ import {
   getRunningProcess,
   unregisterProcess,
 } from "./process-registry.js";
+import { SocketEvents } from "../shared/events.js";
 
 /**
  * Resume a budget-exceeded task with a higher total budget ceiling, continuing
@@ -108,7 +109,7 @@ export async function stopTask(taskId: string): Promise<void> {
   });
 
   unregisterProcess(taskId);
-  io.emit("tasks:update", updated);
+  io.emit(SocketEvents.TASKS_UPDATE, updated);
 }
 
 /**

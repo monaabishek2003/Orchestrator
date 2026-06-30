@@ -10,6 +10,7 @@ import {
   sendMessage,
   stopTask,
 } from "../services/task-lifecycle.js";
+import { SocketEvents } from "../shared/events.js";
 
 export const taskRouter: Router = Router();
 
@@ -68,7 +69,7 @@ taskRouter.post("/tasks", async (req: Request, res: Response) => {
     const task = await prisma.task.create({
       data: { title, prompt, tokenBudget, permissionMode, status: "todo" },
     });
-    io.emit("tasks:update", task);
+    io.emit(SocketEvents.TASKS_UPDATE, task);
     return res.status(201).json(task);
   } catch (error) {
     return sendError(res, 500, (error as Error).message);
@@ -158,7 +159,7 @@ taskRouter.put("/tasks/:id", async (req: Request, res: Response) => {
       where: { id: task.id },
       data,
     });
-    io.emit("tasks:update", updated);
+    io.emit(SocketEvents.TASKS_UPDATE, updated);
     return res.status(200).json(updated);
   } catch (error) {
     return sendError(res, 500, (error as Error).message);
@@ -284,7 +285,7 @@ taskRouter.delete("/tasks/:id", async (req: Request, res: Response) => {
     }
 
     await prisma.task.delete({ where: { id: task.id } });
-    io.emit("tasks:delete", { id: task.id });
+    io.emit(SocketEvents.TASKS_DELETE, { id: task.id });
     return res.status(200).json({ success: true });
   } catch (error) {
     return sendError(res, 500, (error as Error).message);
