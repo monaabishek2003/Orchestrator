@@ -192,6 +192,13 @@ export async function startTask(
       // kill-all has already killed this task's process and settled its state.
       settled = true;
     }
+
+    // The `result` event marks the end of the agent's turn. Closing stdin lets
+    // the bidirectional process exit naturally (exit 0), driving the task to
+    // `done` via onExit. This is event-driven, not a timer/heuristic.
+    if (!settled && event.type === "result") {
+      handle.stdin.end();
+    }
   }
 
   async function handleExit(
