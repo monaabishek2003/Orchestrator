@@ -1,0 +1,16 @@
+{
+  "name": "orchestrator",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"@orchestrator/*\" dev",
+    "dev:server": "pnpm --filter @orchestrator/server dev",
+    "dev:web": "pnpm --filter @orchestrator/web dev",
+    "build": "pnpm --filter @orchestrator/server build && pnpm --filter @orchestrator/web build",
+    "typecheck": "pnpm --filter @orchestrator/server typecheck && pnpm --filter @orchestrator/web typecheck"
+  }
+}
