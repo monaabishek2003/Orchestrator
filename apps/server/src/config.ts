@@ -1,2 +1,0 @@
-export const STUCK_INTERVAL_THRESHHOLD = 40 * 1000;
-export const STUCK_CHECK_INTERVAL_MS = 5000;
