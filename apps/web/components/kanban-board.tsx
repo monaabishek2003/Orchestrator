@@ -21,11 +21,15 @@ const COLUMNS: { status: TaskStatus; title: string }[] = [
 export function KanbanBoard() {
   const tasks = useTaskStore((state) => state.tasks);
   const fetchTasks = useTaskStore((state) => state.fetchTasks);
+  const fetchWorkspaceStats = useTaskStore(
+    (state) => state.fetchWorkspaceStats,
+  );
   const [createOpen, setCreateOpen] = useState(false);
 
   useEffect(() => {
     void fetchTasks();
-  }, [fetchTasks]);
+    void fetchWorkspaceStats();
+  }, [fetchTasks, fetchWorkspaceStats]);
 
   return (
     <>

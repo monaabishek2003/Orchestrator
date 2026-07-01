@@ -118,3 +118,12 @@ export function sendMessage(
 export function getWorkspaceStats(): Promise<WorkspaceStats> {
   return request<WorkspaceStats>("/api/workspace/stats");
 }
+
+export function setWorkspaceBudgetCap(
+  budgetCap: number | null,
+): Promise<WorkspaceBudget> {
+  return request<WorkspaceBudget>("/api/workspace/budget", {
+    method: "PUT",
+    body: { budgetCap },
+  });
+}

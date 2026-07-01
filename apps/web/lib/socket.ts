@@ -49,19 +49,26 @@ export function useSocket(): void {
         budgetCap: budget.budgetCap,
         totalSpent: budget.totalSpent,
       });
+    const onBudgetExceeded = (budget: WorkspaceBudget): void => {
+      store.setWorkspaceBudget({
+        budgetCap: budget.budgetCap,
+        totalSpent: budget.totalSpent,
+      });
+      store.setBudgetExceeded(true);
+    };
 
     s.on(Events.TASKS_UPDATE, onTaskUpdate);
     s.on(Events.TASKS_DELETE, onTaskDelete);
     s.on(Events.TASK_EVENT, onTaskEvent);
     s.on(Events.WORKSPACE_UPDATE, onWorkspaceUpdate);
-    s.on(Events.WORKSPACE_BUDGET_EXCEEDED, onWorkspaceUpdate);
+    s.on(Events.WORKSPACE_BUDGET_EXCEEDED, onBudgetExceeded);
 
     return () => {
       s.off(Events.TASKS_UPDATE, onTaskUpdate);
       s.off(Events.TASKS_DELETE, onTaskDelete);
       s.off(Events.TASK_EVENT, onTaskEvent);
       s.off(Events.WORKSPACE_UPDATE, onWorkspaceUpdate);
-      s.off(Events.WORKSPACE_BUDGET_EXCEEDED, onWorkspaceUpdate);
+      s.off(Events.WORKSPACE_BUDGET_EXCEEDED, onBudgetExceeded);
     };
   }, []);
 }
