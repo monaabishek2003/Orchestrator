@@ -14,6 +14,8 @@ interface TaskState {
   updateTask: (task: Task) => void;
   removeTask: (id: string) => void;
   addEvent: (taskId: string, event: TaskEvent) => void;
+  setEvents: (taskId: string, events: TaskEvent[]) => void;
+  clearEvents: (taskId: string) => void;
   setWorkspaceBudget: (budget: WorkspaceBudget) => void;
 
   fetchTasks: () => Promise<void>;
@@ -44,7 +46,28 @@ export const useTaskStore = create<TaskState>((set) => ({
   addEvent: (taskId, event) =>
     set((state) => {
       const existing = state.events[taskId] ?? [];
+      if (existing.some((e) => e.id === event.id)) return {};
       return { events: { ...state.events, [taskId]: [...existing, event] } };
+    }),
+
+  setEvents: (taskId, incoming) =>
+    set((state) => {
+      const byId = new Map<string, TaskEvent>();
+      for (const e of incoming) byId.set(e.id, e);
+      for (const e of state.events[taskId] ?? []) byId.set(e.id, e);
+      const merged = Array.from(byId.values()).sort(
+        (a, b) =>
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+      );
+      return { events: { ...state.events, [taskId]: merged } };
+    }),
+
+  clearEvents: (taskId) =>
+    set((state) => {
+      if (!(taskId in state.events)) return {};
+      const next = { ...state.events };
+      delete next[taskId];
+      return { events: next };
     }),
 
   setWorkspaceBudget: (budget) => set({ workspaceBudget: budget }),

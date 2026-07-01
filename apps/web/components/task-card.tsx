@@ -35,6 +35,8 @@ import {
 } from "@/lib/format";
 import type { Task } from "@/lib/types";
 import { CreateTaskModal } from "./create-task-modal";
+import { MessageInput } from "./message-input";
+import { StepFeed } from "./step-feed";
 
 /** Stops a click from bubbling up to the card's open-detail handler. */
 function stop(event: React.MouseEvent): void {
@@ -307,12 +309,8 @@ function RunningCard({ task }: { task: Task }) {
         </span>
       </div>
 
-      <div className="rounded-md border border-dashed p-2 text-center text-[11px] text-muted-foreground">
-        Live feed — Section 17
-      </div>
-      <div className="rounded-md border border-dashed p-2 text-center text-[11px] text-muted-foreground">
-        Message input — Section 17
-      </div>
+      <StepFeed taskId={task.id} />
+      <MessageInput taskId={task.id} />
 
       <ConfirmActionButton
         label="Stop"

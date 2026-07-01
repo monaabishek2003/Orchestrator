@@ -38,8 +38,10 @@ export function useSocket(): void {
     const store = useTaskStore.getState();
 
     const onTaskUpdate = (task: Task): void => store.updateTask(task);
-    const onTaskDelete = (payload: { id: string }): void =>
+    const onTaskDelete = (payload: { id: string }): void => {
       store.removeTask(payload.id);
+      store.clearEvents(payload.id);
+    };
     const onTaskEvent = (event: TaskEvent): void =>
       store.addEvent(event.taskId, event);
     const onWorkspaceUpdate = (budget: WorkspaceBudget): void =>
