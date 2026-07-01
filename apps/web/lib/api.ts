@@ -1,4 +1,4 @@
-import type { PermissionMode, Task, TaskEvent, TimelineEntry, WorkspaceBudget } from "./types";
+import type { AnalyticsData, PermissionMode, Task, TaskEvent, TimelineEntry, WorkspaceBudget } from "./types";
 
 /** Resolve the API base URL for dev vs. production (static export). */
 function getBaseUrl(): string {
@@ -130,4 +130,8 @@ export function setWorkspaceBudgetCap(
 
 export function getTimeline(): Promise<TimelineEntry[]> {
   return request<TimelineEntry[]>("/api/workspace/timeline");
+}
+
+export function getAnalytics(): Promise<AnalyticsData> {
+  return request<AnalyticsData>("/api/analytics");
 }

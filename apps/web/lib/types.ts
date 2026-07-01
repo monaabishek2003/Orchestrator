@@ -59,3 +59,19 @@ export interface TimelineEntry {
   cost?: number;
   duration?: number;
 }
+
+/** Response from GET /api/analytics. */
+export interface AnalyticsData {
+  totalTasksAllTime: number;
+  totalCostAllTime: number;
+  averageCostPerTask: number;
+  averageDurationPerTask: number;
+  tasksByStatus: {
+    todo: number;
+    running: number;
+    done: number;
+    token_exceeded: number;
+    failed: number;
+  };
+  costByDay: { date: string; cost: number }[];
+}

@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Pencil, X } from "lucide-react";
+import { BarChart3, Pencil, X } from "lucide-react";
+
+import { AnalyticsDialog } from "./analytics-dialog";
 
 import { setWorkspaceBudgetCap } from "@/lib/api";
 import { formatCost, formatNumber } from "@/lib/format";
@@ -313,6 +315,8 @@ function WorkspaceBudgetSection() {
 /* -------------------------------------------------------------------------- */
 
 export function TopBar() {
+  const [analyticsOpen, setAnalyticsOpen] = React.useState(false);
+
   return (
     <div className="flex h-full items-center justify-between gap-4">
       <div className="flex items-center gap-4">
@@ -321,7 +325,19 @@ export function TopBar() {
         </span>
         <SessionStats />
       </div>
-      <WorkspaceBudgetSection />
+      <div className="flex items-center gap-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="gap-1.5 text-xs"
+          onClick={() => setAnalyticsOpen(true)}
+        >
+          <BarChart3 className="h-3.5 w-3.5" />
+          Analytics
+        </Button>
+        <WorkspaceBudgetSection />
+      </div>
+      <AnalyticsDialog open={analyticsOpen} onOpenChange={setAnalyticsOpen} />
     </div>
   );
 }
