@@ -22,11 +22,17 @@ export const PORT = 8000;
 const isProduction = process.env["NODE_ENV"] === "production";
 
 /**
- * Absolute path to the web app's static export. Resolves the same way whether
- * this module runs from `src/` (dev) or the bundled `dist/` (production):
- * `<app>/server/{src,dist}` → `<app>/web/out`.
+ * Absolute path to the web app's static export.
+ *
+ * Production (running from dist/cli.js): static files are at `dist/web/`
+ * — i.e. `<moduleDir>/web`.
+ *
+ * Development (running from apps/server/src/): files are at `apps/web/out`
+ * — i.e. `<moduleDir>/../../web/out`.
  */
-const webOutDir = resolve(moduleDir, "..", "..", "web", "out");
+const webOutDir = isProduction
+  ? resolve(moduleDir, "web")
+  : resolve(moduleDir, "..", "..", "web", "out");
 
 export const app: Express = express();
 export const httpServer: HttpServer = createServer(app);
