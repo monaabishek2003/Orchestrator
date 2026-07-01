@@ -2,8 +2,10 @@
 
 import { create } from "zustand";
 
-import { getTasks, getWorkspaceStats } from "./api";
-import type { Task, TaskEvent, WorkspaceBudget } from "./types";
+import { getTimeline, getTasks, getWorkspaceStats } from "./api";
+import type { Task, TaskEvent, TimelineEntry, WorkspaceBudget } from "./types";
+
+const MAX_TIMELINE = 100;
 
 interface TaskState {
   tasks: Task[];
@@ -11,6 +13,7 @@ interface TaskState {
   workspaceBudget: WorkspaceBudget;
   selectedTaskId: string | null;
   budgetExceeded: boolean;
+  timeline: TimelineEntry[];
 
   setTasks: (tasks: Task[]) => void;
   updateTask: (task: Task) => void;
@@ -21,9 +24,12 @@ interface TaskState {
   setWorkspaceBudget: (budget: WorkspaceBudget) => void;
   setSelectedTaskId: (id: string | null) => void;
   setBudgetExceeded: (exceeded: boolean) => void;
+  setTimeline: (entries: TimelineEntry[]) => void;
+  addTimelineEntry: (entry: TimelineEntry) => void;
 
   fetchTasks: () => Promise<void>;
   fetchWorkspaceStats: () => Promise<void>;
+  fetchTimeline: () => Promise<void>;
 }
 
 export const useTaskStore = create<TaskState>((set) => ({
@@ -32,6 +38,7 @@ export const useTaskStore = create<TaskState>((set) => ({
   workspaceBudget: { budgetCap: null, totalSpent: 0 },
   selectedTaskId: null,
   budgetExceeded: false,
+  timeline: [],
 
   setTasks: (tasks) => set({ tasks }),
 
@@ -82,6 +89,13 @@ export const useTaskStore = create<TaskState>((set) => ({
 
   setBudgetExceeded: (exceeded) => set({ budgetExceeded: exceeded }),
 
+  setTimeline: (entries) => set({ timeline: entries.slice(0, MAX_TIMELINE) }),
+
+  addTimelineEntry: (entry) =>
+    set((state) => ({
+      timeline: [entry, ...state.timeline].slice(0, MAX_TIMELINE),
+    })),
+
   fetchTasks: async () => {
     const tasks = await getTasks();
     set({ tasks });
@@ -95,5 +109,10 @@ export const useTaskStore = create<TaskState>((set) => ({
         totalSpent: stats.workspaceBudget.totalSpent,
       },
     });
+  },
+
+  fetchTimeline: async () => {
+    const entries = await getTimeline();
+    set({ timeline: entries.slice(0, MAX_TIMELINE) });
   },
 }));

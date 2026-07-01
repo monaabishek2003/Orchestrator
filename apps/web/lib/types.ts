@@ -48,3 +48,14 @@ export interface WorkspaceBudget {
   budgetCap: number | null;
   totalSpent: number;
 }
+
+/** A timeline entry from the workspace activity feed. */
+export interface TimelineEntry {
+  type: "task_started" | "task_completed" | "task_exceeded" | "task_failed";
+  taskId: string;
+  taskTitle: string;
+  timestamp: string;
+  /** Optional extra detail for completed tasks. */
+  cost?: number;
+  duration?: number;
+}

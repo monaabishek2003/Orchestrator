@@ -5,7 +5,7 @@ import { io, type Socket } from "socket.io-client";
 
 import { API_BASE_URL } from "./api";
 import { useTaskStore } from "./store";
-import type { Task, TaskEvent, WorkspaceBudget } from "./types";
+import type { Task, TaskEvent, TimelineEntry, WorkspaceBudget } from "./types";
 
 /** Socket.io event names — must match the server's contract. */
 const Events = {
@@ -37,7 +37,39 @@ export function useSocket(): void {
     const s = getSocket();
     const store = useTaskStore.getState();
 
-    const onTaskUpdate = (task: Task): void => store.updateTask(task);
+    const onTaskUpdate = (task: Task): void => {
+      // Detect status change for timeline entries.
+      const prev = useTaskStore.getState().tasks.find((t) => t.id === task.id);
+      const prevStatus = prev?.status;
+
+      store.updateTask(task);
+
+      if (prevStatus && prevStatus !== task.status) {
+        let type: TimelineEntry["type"] | null = null;
+        if (task.status === "running" && prevStatus !== "running") {
+          type = "task_started";
+        } else if (task.status === "done") {
+          type = "task_completed";
+        } else if (task.status === "token_exceeded") {
+          type = "task_exceeded";
+        } else if (task.status === "failed") {
+          type = "task_failed";
+        }
+        if (type) {
+          const entry: TimelineEntry = {
+            type,
+            taskId: task.id,
+            taskTitle: task.title,
+            timestamp: new Date().toISOString(),
+          };
+          if (type === "task_completed") {
+            entry.cost = task.totalCost;
+            entry.duration = task.duration ?? undefined;
+          }
+          store.addTimelineEntry(entry);
+        }
+      }
+    };
     const onTaskDelete = (payload: { id: string }): void => {
       store.removeTask(payload.id);
       store.clearEvents(payload.id);

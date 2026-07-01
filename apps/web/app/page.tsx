@@ -1,5 +1,6 @@
 import { BudgetExceededBanner } from "@/components/budget-exceeded-banner";
 import { KanbanBoard } from "@/components/kanban-board";
+import { TimelinePanel } from "@/components/timeline-panel";
 import { TopBar } from "@/components/top-bar";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       <main className="min-h-0 flex-1">
         <KanbanBoard />
       </main>
+      <TimelinePanel />
     </div>
   );
 }
