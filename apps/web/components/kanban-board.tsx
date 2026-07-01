@@ -8,6 +8,7 @@ import { useTaskStore } from "@/lib/store";
 import type { TaskStatus } from "@/lib/types";
 import { CreateTaskModal } from "./create-task-modal";
 import { KanbanColumn } from "./kanban-column";
+import { TaskDetailDrawer } from "./task-detail-drawer";
 
 const COLUMNS: { status: TaskStatus; title: string }[] = [
   { status: "todo", title: "Todo" },
@@ -51,6 +52,7 @@ export function KanbanBoard() {
         ))}
       </div>
       <CreateTaskModal open={createOpen} onOpenChange={setCreateOpen} />
+      <TaskDetailDrawer />
     </>
   );
 }

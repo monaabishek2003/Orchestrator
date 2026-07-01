@@ -33,6 +33,7 @@ import {
   formatTokensCompact,
   roundUpToNearest10K,
 } from "@/lib/format";
+import { useTaskStore } from "@/lib/store";
 import type { Task } from "@/lib/types";
 import { CreateTaskModal } from "./create-task-modal";
 import { MessageInput } from "./message-input";
@@ -479,14 +480,14 @@ function CardBody({ task }: { task: Task }) {
 }
 
 export function TaskCard({ task }: { task: Task }) {
+  const setSelectedTaskId = useTaskStore((s) => s.setSelectedTaskId);
+
   return (
     <Card
       role="button"
       tabIndex={0}
       className="cursor-pointer p-3 transition-colors hover:bg-accent/40"
-      onClick={() => {
-        // Detail drawer wired in Section 18.
-      }}
+      onClick={() => setSelectedTaskId(task.id)}
     >
       <CardBody task={task} />
     </Card>

@@ -9,6 +9,7 @@ interface TaskState {
   tasks: Task[];
   events: Record<string, TaskEvent[]>;
   workspaceBudget: WorkspaceBudget;
+  selectedTaskId: string | null;
 
   setTasks: (tasks: Task[]) => void;
   updateTask: (task: Task) => void;
@@ -17,6 +18,7 @@ interface TaskState {
   setEvents: (taskId: string, events: TaskEvent[]) => void;
   clearEvents: (taskId: string) => void;
   setWorkspaceBudget: (budget: WorkspaceBudget) => void;
+  setSelectedTaskId: (id: string | null) => void;
 
   fetchTasks: () => Promise<void>;
   fetchWorkspaceStats: () => Promise<void>;
@@ -26,6 +28,7 @@ export const useTaskStore = create<TaskState>((set) => ({
   tasks: [],
   events: {},
   workspaceBudget: { budgetCap: null, totalSpent: 0 },
+  selectedTaskId: null,
 
   setTasks: (tasks) => set({ tasks }),
 
@@ -71,6 +74,8 @@ export const useTaskStore = create<TaskState>((set) => ({
     }),
 
   setWorkspaceBudget: (budget) => set({ workspaceBudget: budget }),
+
+  setSelectedTaskId: (id) => set({ selectedTaskId: id }),
 
   fetchTasks: async () => {
     const tasks = await getTasks();
