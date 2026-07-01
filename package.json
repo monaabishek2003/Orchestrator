@@ -24,9 +24,9 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/niceperson4me/orchestrator.git"
+    "url": "https://github.com/monaabishek2003/Orchestrator.git"
   },
-  "homepage": "https://github.com/niceperson4me/orchestrator#readme",
+  "homepage": "https://github.com/monaabishek2003/Orchestrator#readme",
   "engines": {
     "node": ">=20.11.0"
   },
