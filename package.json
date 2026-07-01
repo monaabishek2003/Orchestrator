@@ -1,13 +1,14 @@
 {
   "name": "orchestrator-sdk",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Open-source Kanban board for Claude Code that doesn't just show what an agent is spending — it stops the agent the moment it spends too much.",
   "type": "module",
   "bin": {
     "orchestrator": "./dist/cli.js"
   },
   "files": [
-    "dist"
+    "dist",
+    "scripts/postinstall.js"
   ],
   "keywords": [
     "claude",
@@ -37,7 +38,7 @@
     "dev:web": "pnpm --filter @orchestrator/web dev",
     "build": "pnpm --filter @orchestrator/web build && pnpm --filter @orchestrator/server build && node scripts/assemble-dist.js",
     "typecheck": "pnpm --filter @orchestrator/server typecheck && pnpm --filter @orchestrator/web typecheck",
-    "postinstall": "prisma generate --schema ./dist/prisma/schema.prisma",
+    "postinstall": "node scripts/postinstall.js",
     "prepublishOnly": "pnpm build && node scripts/verify-dist.js"
   },
   "dependencies": {

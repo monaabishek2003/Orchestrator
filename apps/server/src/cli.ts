@@ -6,7 +6,7 @@ import { gitPreflight } from "./git.js";
 import { httpServer, PORT, startServer } from "./server.js";
 import { getAllRunningProcesses } from "./services/process-registry.js";
 
-console.log("Orchestrator v0.3.0");
+console.log("Orchestrator v0.3.3");
 
 // 1. Git preflight — exits with code 1 on failure.
 gitPreflight();

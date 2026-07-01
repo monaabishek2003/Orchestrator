@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { createServer, type Server as HttpServer } from "node:http";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -19,20 +20,14 @@ const moduleDir = dirname(fileURLToPath(import.meta.url));
 /** Port the HTTP server listens on. */
 export const PORT = 8000;
 
-const isProduction = process.env["NODE_ENV"] === "production";
-
 /**
- * Absolute path to the web app's static export.
- *
- * Production (running from dist/cli.js): static files are at `dist/web/`
- * — i.e. `<moduleDir>/web`.
- *
- * Development (running from apps/server/src/): files are at `apps/web/out`
- * — i.e. `<moduleDir>/../../web/out`.
+ * Detect production by checking if the bundled web static files exist next
+ * to this module (dist/web/). This works regardless of NODE_ENV.
  */
-const webOutDir = isProduction
-  ? resolve(moduleDir, "web")
-  : resolve(moduleDir, "..", "..", "web", "out");
+const prodWebDir = resolve(moduleDir, "web");
+const devWebDir = resolve(moduleDir, "..", "..", "web", "out");
+const isProduction = existsSync(prodWebDir);
+const webOutDir = isProduction ? prodWebDir : devWebDir;
 
 export const app: Express = express();
 export const httpServer: HttpServer = createServer(app);

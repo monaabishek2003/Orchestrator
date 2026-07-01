@@ -9,17 +9,14 @@ const require = createRequire(import.meta.url);
 
 const moduleDir = dirname(fileURLToPath(import.meta.url));
 
-const isProduction = process.env["NODE_ENV"] === "production";
-
 /**
- * Absolute path to the Prisma schema.
- *
- * Production (from dist/): `dist/prisma/schema.prisma` = `<moduleDir>/prisma/schema.prisma`.
- * Development (from apps/server/src/): `apps/server/prisma/schema.prisma` = `<moduleDir>/../prisma/schema.prisma`.
+ * Absolute path to the Prisma schema. Detected by checking which path exists:
+ * - Production (from dist/): `<moduleDir>/prisma/schema.prisma`
+ * - Development (from apps/server/src/): `<moduleDir>/../prisma/schema.prisma`
  */
-const schemaPath = isProduction
-  ? resolve(moduleDir, "prisma", "schema.prisma")
-  : resolve(moduleDir, "..", "prisma", "schema.prisma");
+const prodSchemaPath = resolve(moduleDir, "prisma", "schema.prisma");
+const devSchemaPath = resolve(moduleDir, "..", "prisma", "schema.prisma");
+const schemaPath = existsSync(prodSchemaPath) ? prodSchemaPath : devSchemaPath;
 
 /** `~/.orchestrator` directory that holds the SQLite database. */
 export const dataDir = join(homedir(), ".orchestrator");
