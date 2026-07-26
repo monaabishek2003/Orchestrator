@@ -1,0 +1,245 @@
+/* ===========================================================
+   Orchestrator Design System — colors + type
+   Dark agentic-AI aesthetic. Mission-control / observability.
+   =========================================================== */
+
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("fonts/Geist-SemiBold.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("fonts/GeistMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist Mono";
+  src: url("fonts/GeistMono-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  /* ----- Surfaces -----
+     A 5-stop dark scale. bg-0 is the page; bg-1 the default panel;
+     bg-2 raised; bg-3 hovered/pressed; bg-4 popovers + overlays. */
+  --bg-0: #08090A;
+  --bg-1: #0D0E10;
+  --bg-2: #131518;
+  --bg-3: #1A1D21;
+  --bg-4: #22262B;
+
+  /* Translucent overlays for hover/press on existing surfaces */
+  --hover: rgba(255, 255, 255, 0.035);
+  --press: rgba(255, 255, 255, 0.07);
+
+  /* ----- Foreground -----
+     fg-1 primary copy, fg-2 secondary, fg-3 tertiary labels,
+     fg-4 disabled/quietest. */
+  --fg-1: #ECEDEE;
+  --fg-2: #A8ABB0;
+  --fg-3: #6C6F75;
+  --fg-4: #44464A;
+
+  /* ----- Borders -----
+     Always rgba so they sit naturally on any surface. */
+  --border-1: rgba(255, 255, 255, 0.06);  /* hairline dividers */
+  --border-2: rgba(255, 255, 255, 0.09);  /* default card/panel */
+  --border-3: rgba(255, 255, 255, 0.14);  /* hovered + emphasized */
+  --border-focus: rgba(91, 228, 155, 0.55);
+
+  /* ----- Accent (agentic green) -----
+     The "system is alive" signal. Used for primary actions,
+     running status, focus rings, key data. */
+  --accent: #5BE49B;
+  --accent-hover: #6FECA8;
+  --accent-press: #4ACC87;
+  --accent-dim: rgba(91, 228, 155, 0.14);
+  --accent-glow: rgba(91, 228, 155, 0.35);
+  --accent-fg: #062014;  /* foreground on accent fills */
+
+  /* ----- Semantic statuses -----
+     Each has: solid, dim (12-15% bg tint), and fg (on-dim text). */
+  --running: #5BE49B;
+  --running-dim: rgba(91, 228, 155, 0.12);
+  --running-fg: #8EF0B8;
+
+  --warning: #F5B544;
+  --warning-dim: rgba(245, 181, 68, 0.13);
+  --warning-fg: #F7C875;
+
+  --danger: #FF6B6B;
+  --danger-dim: rgba(255, 107, 107, 0.13);
+  --danger-fg: #FF9090;
+
+  --done: #6C6F75;       /* completed = neutral. agent is no longer live */
+  --done-dim: rgba(170, 175, 182, 0.10);
+  --done-fg: #A8ABB0;
+
+  --info: #6BAEFF;
+  --info-dim: rgba(107, 174, 255, 0.12);
+  --info-fg: #93C5FF;
+
+  /* ----- Type families ----- */
+  --font-sans: "Geist", ui-sans-serif, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "JetBrains Mono", "SF Mono",
+               Menlo, Consolas, monospace;
+
+  /* ----- Type scale (semantic) ----- */
+  --t-display-size: 44px;
+  --t-display-line: 1.05;
+  --t-display-weight: 600;
+  --t-display-tracking: -0.02em;
+
+  --t-h1-size: 28px;
+  --t-h1-line: 1.15;
+  --t-h1-weight: 600;
+  --t-h1-tracking: -0.015em;
+
+  --t-h2-size: 20px;
+  --t-h2-line: 1.25;
+  --t-h2-weight: 600;
+  --t-h2-tracking: -0.01em;
+
+  --t-h3-size: 15px;
+  --t-h3-line: 1.3;
+  --t-h3-weight: 600;
+  --t-h3-tracking: -0.005em;
+
+  --t-body-size: 14px;
+  --t-body-line: 1.5;
+  --t-body-weight: 400;
+
+  --t-small-size: 13px;
+  --t-small-line: 1.45;
+
+  --t-micro-size: 11px;
+  --t-micro-line: 1.3;
+  --t-micro-tracking: 0.06em;     /* uppercase eyebrow */
+
+  --t-mono-size: 13px;
+  --t-mono-line: 1.5;
+
+  /* ----- Spacing scale (4px grid) ----- */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* ----- Radii ----- */
+  --radius-1: 4px;
+  --radius-2: 6px;
+  --radius-3: 8px;     /* default */
+  --radius-4: 12px;    /* cards */
+  --radius-5: 16px;
+  --radius-pill: 999px;
+
+  /* ----- Shadows (soft, low) -----
+     Dark UIs don't need much elevation; borders carry most of it. */
+  --shadow-1: 0 1px 0 rgba(255, 255, 255, 0.03) inset,
+              0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 1px 0 rgba(255, 255, 255, 0.04) inset,
+              0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-pop: 0 1px 0 rgba(255, 255, 255, 0.05) inset,
+                0 18px 48px rgba(0, 0, 0, 0.6);
+  --shadow-focus: 0 0 0 3px rgba(91, 228, 155, 0.22);
+  --shadow-glow: 0 0 24px var(--accent-glow);
+
+  /* ----- Motion ----- */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.5, 0, 0.2, 1);
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 260ms;
+}
+
+/* ===========================================================
+   Base / semantic element styling
+   Apply on a page by setting `body { ... using vars }`.
+   These selectors are scoped to .ds-prose so they only opt in
+   when needed.
+   =========================================================== */
+
+html, body {
+  background: var(--bg-0);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-body-size);
+  line-height: var(--t-body-line);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.ds-display {
+  font-size: var(--t-display-size);
+  line-height: var(--t-display-line);
+  font-weight: var(--t-display-weight);
+  letter-spacing: var(--t-display-tracking);
+  color: var(--fg-1);
+}
+.ds-h1, h1.ds {
+  font-size: var(--t-h1-size);
+  line-height: var(--t-h1-line);
+  font-weight: var(--t-h1-weight);
+  letter-spacing: var(--t-h1-tracking);
+  color: var(--fg-1);
+}
+.ds-h2, h2.ds {
+  font-size: var(--t-h2-size);
+  line-height: var(--t-h2-line);
+  font-weight: var(--t-h2-weight);
+  letter-spacing: var(--t-h2-tracking);
+  color: var(--fg-1);
+}
+.ds-h3, h3.ds {
+  font-size: var(--t-h3-size);
+  line-height: var(--t-h3-line);
+  font-weight: var(--t-h3-weight);
+  letter-spacing: var(--t-h3-tracking);
+  color: var(--fg-1);
+}
+.ds-body { font-size: var(--t-body-size); line-height: var(--t-body-line); color: var(--fg-1); }
+.ds-secondary { color: var(--fg-2); }
+.ds-tertiary { color: var(--fg-3); }
+.ds-small { font-size: var(--t-small-size); line-height: var(--t-small-line); color: var(--fg-2); }
+.ds-eyebrow {
+  font-size: var(--t-micro-size);
+  line-height: var(--t-micro-line);
+  letter-spacing: var(--t-micro-tracking);
+  text-transform: uppercase;
+  color: var(--fg-3);
+  font-weight: 500;
+}
+.ds-mono, code, kbd, samp {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-size);
+  line-height: var(--t-mono-line);
+  color: var(--fg-1);
+  font-variant-ligatures: none;
+}
+
+/* selection */
+::selection { background: var(--accent-dim); color: var(--accent); }

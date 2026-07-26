@@ -1,0 +1,61 @@
+/* Preview card base — shared by every card in /preview.
+   Each card is a self-contained HTML file shown on a dark canvas. */
+@import url("../colors_and_type.css");
+
+html, body {
+  margin: 0;
+  background: var(--bg-0);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-body-size);
+  -webkit-font-smoothing: antialiased;
+}
+
+.card {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px 24px;
+  background: var(--bg-1);
+  display: flex;
+  align-items: center;
+}
+
+.row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.col { display: flex; flex-direction: column; gap: 8px; }
+.grid { display: grid; gap: 12px; }
+
+.swatch {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  border: 1px solid var(--border-2);
+  position: relative;
+  flex-shrink: 0;
+}
+.swatch.sm { width: 40px; height: 40px; border-radius: 8px; }
+.swatch-block {
+  display: flex; align-items: center; gap: 12px;
+}
+.swatch-meta { display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+.swatch-name { font-size: 13px; color: var(--fg-1); font-weight: 500; }
+.swatch-token {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+}
+.swatch-value {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-3);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+  font-weight: 500;
+}
+
+.divider { height: 1px; background: var(--border-1); width: 100%; }
